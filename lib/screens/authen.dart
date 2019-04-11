@@ -9,7 +9,7 @@ class _AuthenState extends State<Authen> {
   bool statusRemember = false;
 
   Widget showLogo() {
-    return Image.asset('images/logo.png');
+    return Image.asset('images/logo1.png');
   }
 
   Widget emailTextFromField() {
@@ -52,9 +52,22 @@ class _AuthenState extends State<Authen> {
     });
   }
 
+  Widget loginButton() {
+    return RaisedButton(
+      color: Colors.blue[700],
+      shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(30.0)),
+      child: Text(
+        'Login',
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      onPressed: () {},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomPadding: false,
       body: Container(
         padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
         decoration: BoxDecoration(
@@ -64,10 +77,22 @@ class _AuthenState extends State<Authen> {
         child: Container(
           child: Column(
             children: <Widget>[
-              showLogo(),
+              Container(
+                constraints: BoxConstraints.expand(width: 150, height: 150),
+                child: showLogo(),
+              ),
               emailTextFromField(),
               passwordTextFromField(),
-              rememberCheckBox()
+              rememberCheckBox(),
+              Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: Container(
+                      child: loginButton(),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
