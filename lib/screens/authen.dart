@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart'show get;
 import 'dart:convert';
+import '../models/user_model.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ class _AuthenState extends State<Authen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool statusRemember = false;
-  String user, password;
+  int idLogin;
+  String user, password, truePassword, typeLogin;
 
   String titleUser = 'ลงชื่อเข้าใช้งาน :';
   String titlePassword = 'รหัส :';
@@ -112,6 +114,23 @@ class _AuthenState extends State<Authen> {
     var response = await get(urlAPI);
     var result = json.decode(response.body);
     print(result);
+
+    if (result.toString() == 'null') {
+      print('User False');
+    } else {
+      for (var data in result) {
+        var userModel = UserModel.fromJson(data);
+        truePassword = userModel.password.toString();
+        idLogin = userModel.id;
+      }
+
+      if (password == truePassword) {
+        print('Authen True');
+      } else {
+        print('Password False');
+      }
+
+    }
 
   }
 
