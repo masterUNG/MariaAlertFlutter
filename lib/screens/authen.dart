@@ -16,7 +16,8 @@ class _AuthenState extends State<Authen> {
   String titlePassword = 'รหัส :';
   String titleRemember = 'จดจำ ชื่อผู้ใช้งาน และ รหัส';
   String titleHaveSpace = 'มีช่องว่าง';
-  String messageHaveSpace = 'กรุณากรอกข้อมูลทุกช่อง คะ';
+  String messageHaveSpaceUser = 'กรุณากรอก ชื่อผู้ใช้งาน คะ';
+  String messageHaveSpacePassword = 'กรุณากรอก รหัส คะ';
 
   Widget showLogo() {
     return Image.asset('images/logo1.png');
@@ -32,8 +33,11 @@ class _AuthenState extends State<Authen> {
               TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       validator: (String value) {
         if (value.length == 0) {
-          return messageHaveSpace;
+          return messageHaveSpaceUser;
         }
+      },
+      onSaved: (String value) {
+        user = value;
       },
     );
   }
@@ -45,11 +49,15 @@ class _AuthenState extends State<Authen> {
           labelText: titlePassword,
           hintText: 'Your Password',
           labelStyle:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),validator: (String value) {
-                if (value.length == 0) {
-                  return messageHaveSpace;
-                }
-              },
+              TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      validator: (String value) {
+        if (value.length == 0) {
+          return messageHaveSpacePassword;
+        }
+      },
+      onSaved: (String value) {
+        password = value;
+      },
     );
   }
 
@@ -85,7 +93,10 @@ class _AuthenState extends State<Authen> {
       onPressed: () {
         print('You Click Login');
         print(formKey.currentState.validate());
-        if (formKey.currentState.validate()) {}
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          print('user ==> $user, password ==> $password, remember ==> $statusRemember');
+        }
       },
     );
   }
