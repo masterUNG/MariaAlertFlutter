@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart'show get;
+import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/user_model.dart';
 
@@ -22,6 +22,8 @@ class _AuthenState extends State<Authen> {
   String titleHaveSpace = 'มีช่องว่าง';
   String messageHaveSpaceUser = 'กรุณากรอก ชื่อผู้ใช้งาน คะ';
   String messageHaveSpacePassword = 'กรุณากรอก รหัส คะ';
+  String messageUserFalse = 'ไม่มี ชื่อใช้งานนี้ใน ฐานข้อมูล คะ';
+  String messagePasswordFalse = 'ลองใหม่ รหัสผิด คะ';
 
   Widget showLogo() {
     return Image.asset('images/logo1.png');
@@ -109,14 +111,14 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-  void checkAuthen(BuildContext context, String urlAPI) async{
-
+  void checkAuthen(BuildContext context, String urlAPI) async {
     var response = await get(urlAPI);
     var result = json.decode(response.body);
     print(result);
 
     if (result.toString() == 'null') {
       print('User False');
+      showSnackBar(messageUserFalse);
     } else {
       for (var data in result) {
         var userModel = UserModel.fromJson(data);
@@ -128,15 +130,22 @@ class _AuthenState extends State<Authen> {
         print('Authen True');
       } else {
         print('Password False');
+        showSnackBar(messagePasswordFalse);
       }
-
     }
+  }
 
+  void showSnackBar(String message) {
+    final snackBar = new SnackBar(
+      content: Text(message),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: scaffoldKey,
         resizeToAvoidBottomPadding: false,
         body: Form(
           key: formKey,
