@@ -89,7 +89,7 @@ class _AuthenState extends State<Authen> {
 
   Widget loginButton(BuildContext context) {
     return RaisedButton(
-      color: Colors.blue[700],
+      color: Colors.blue[900],
       shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(30.0)),
       child: Text(
@@ -138,7 +138,7 @@ class _AuthenState extends State<Authen> {
   void showSnackBar(String message) {
     final snackBar = new SnackBar(
       content: Text(message),
-      backgroundColor: Colors.lightBlue[900],
+      backgroundColor: Colors.blue[900],
       duration: new Duration(seconds: 6),
       action: new SnackBarAction(
         label: 'Close',
@@ -159,7 +159,7 @@ class _AuthenState extends State<Authen> {
             padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [Colors.lightBlue[900], Colors.lightBlue[100]],
+                    colors: [Colors.lightBlue[900], Colors.lightBlue[50]],
                     begin: Alignment(-1, -1))),
             child: Container(
               child: Column(
