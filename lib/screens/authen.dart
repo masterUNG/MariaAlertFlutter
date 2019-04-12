@@ -138,6 +138,12 @@ class _AuthenState extends State<Authen> {
   void showSnackBar(String message) {
     final snackBar = new SnackBar(
       content: Text(message),
+      backgroundColor: Colors.lightBlue[900],
+      duration: new Duration(seconds: 6),
+      action: new SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+      ),
     );
     scaffoldKey.currentState.showSnackBar(snackBar);
   }
@@ -153,7 +159,7 @@ class _AuthenState extends State<Authen> {
             padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [Colors.blue[700], Colors.blue[50]],
+                    colors: [Colors.lightBlue[900], Colors.lightBlue[100]],
                     begin: Alignment(-1, -1))),
             child: Container(
               child: Column(
