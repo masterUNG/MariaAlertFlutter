@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart'show get;
+import 'dart:convert';
 
 class Authen extends StatefulWidget {
   @override
@@ -14,7 +16,7 @@ class _AuthenState extends State<Authen> {
 
   String titleUser = 'ลงชื่อเข้าใช้งาน :';
   String titlePassword = 'รหัส :';
-  String titleRemember = 'จดจำ ชื่อผู้ใช้งาน และ รหัส';
+  String titleRemember = 'จดจำผู้ใช้งาน และ รหัส';
   String titleHaveSpace = 'มีช่องว่าง';
   String messageHaveSpaceUser = 'กรุณากรอก ชื่อผู้ใช้งาน คะ';
   String messageHaveSpacePassword = 'กรุณากรอก รหัส คะ';
@@ -81,7 +83,7 @@ class _AuthenState extends State<Authen> {
     });
   }
 
-  Widget loginButton() {
+  Widget loginButton(BuildContext context) {
     return RaisedButton(
       color: Colors.blue[700],
       shape: new RoundedRectangleBorder(
@@ -95,10 +97,22 @@ class _AuthenState extends State<Authen> {
         print(formKey.currentState.validate());
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print('user ==> $user, password ==> $password, remember ==> $statusRemember');
+          print(
+              'user ==> $user, password ==> $password, remember ==> $statusRemember');
+          String urlAPI =
+              'http://tscore.ms.ac.th/App/getUserWhereUser.php?isAdd=true&User=$user';
+          checkAuthen(context, urlAPI);
         }
       },
     );
+  }
+
+  void checkAuthen(BuildContext context, String urlAPI) async{
+
+    var response = await get(urlAPI);
+    var result = json.decode(response.body);
+    print(result);
+
   }
 
   @override
@@ -127,7 +141,7 @@ class _AuthenState extends State<Authen> {
                     children: <Widget>[
                       new Expanded(
                         child: Container(
-                          child: loginButton(),
+                          child: loginButton(context),
                         ),
                       )
                     ],
