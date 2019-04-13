@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/user_model.dart';
+import 'news_listview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -13,6 +15,8 @@ class _AuthenState extends State<Authen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool statusRemember = false;
+  SharedPreferences sharedPreferences;
+
   int idLogin;
   String user, password, truePassword, typeLogin;
 
@@ -24,6 +28,28 @@ class _AuthenState extends State<Authen> {
   String messageHaveSpacePassword = 'กรุณากรอก รหัส คะ';
   String messageUserFalse = 'ไม่มี ชื่อใช้งานนี้ใน ฐานข้อมูล คะ';
   String messagePasswordFalse = 'ลองใหม่ รหัสผิด คะ';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDataFromSharePreferance(context);
+  }
+
+  void getDataFromSharePreferance(BuildContext context) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      bool currentStatus = sharedPreferences.getBool('Remember');
+    print('currentStatus ==>>> $currentStatus');
+    if (currentStatus != null) {
+      print('current not null');
+      if (currentStatus) {
+        print('Remember true');
+        moveToNewsListView(context);
+      }
+    }
+    });
+  }
 
   Widget showLogo() {
     return Image.asset('images/logo1.png');
@@ -84,6 +110,7 @@ class _AuthenState extends State<Authen> {
   void onRememberCheck(bool value) {
     setState(() {
       statusRemember = value;
+      print('statusRemember ==>>> $statusRemember');
     });
   }
 
@@ -128,11 +155,29 @@ class _AuthenState extends State<Authen> {
 
       if (password == truePassword) {
         print('Authen True');
+        setupSharePreferance();
+        moveToNewsListView(context);
       } else {
         print('Password False');
         showSnackBar(messagePasswordFalse);
       }
     }
+  }
+
+  setupSharePreferance()async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      sharedPreferences.setBool('Remember', statusRemember);
+      sharedPreferences.setInt('id', idLogin);
+      sharedPreferences.setString('Type', typeLogin);
+    });
+
+  }
+
+  moveToNewsListView(BuildContext context) {
+    var newsRoute = new MaterialPageRoute(
+        builder: (BuildContext context) => NewsListview());
+    Navigator.of(context).push(newsRoute);
   }
 
   void showSnackBar(String message) {
