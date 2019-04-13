@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -7,11 +8,20 @@ class ShowNewsList extends StatefulWidget {
 }
 
 class _ShowNewsListState extends State<ShowNewsList> {
+  String titleAppbar = 'ข่าวสาร น่ารู้';
+  String myToken;
   String textValue = 'Show News List';
+  bool rememberBool;
+  int idLoginInt;
+  String typeString;
+
   FirebaseMessaging firebaseMessageing = new FirebaseMessaging();
+
+  SharedPreferences sharePreferances;
 
   @override
   void initState() {
+    getCredectial();
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
       print('onLaunch Call:');
     }, onResume: (Map<String, dynamic> msg) {
@@ -26,24 +36,34 @@ class _ShowNewsListState extends State<ShowNewsList> {
       print('Ios Setting Registed');
     });
     firebaseMessageing.getToken().then((token) {
+      myToken = token;
+      print('myToken ==>>> $myToken');
       updateToken(token);
+    });
+  }
+
+  void getCredectial() async {
+    sharePreferances = await SharedPreferences.getInstance();
+    setState(() {
+      rememberBool = sharePreferances.getBool('Remember');
+      idLoginInt = sharePreferances.getInt('id');
+      typeString = sharePreferances.getString('Type');
+      print('Receive from SharePreferance rememberBool => $rememberBool, idLogin => $idLoginInt, typeString => $typeString');
     });
   }
 
   void updateToken(String token) {
     print(token);
     textValue = token;
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[400],
-        title: Text('Show News List'),
+        backgroundColor: Colors.blue[900],
+        title: Text(titleAppbar),
       ),
       body: new Center(
         child: Container(

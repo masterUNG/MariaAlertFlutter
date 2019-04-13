@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/user_model.dart';
-import 'news_listview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'show_news_list.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -40,14 +40,14 @@ class _AuthenState extends State<Authen> {
     sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       bool currentStatus = sharedPreferences.getBool('Remember');
-    print('currentStatus ==>>> $currentStatus');
-    if (currentStatus != null) {
-      print('current not null');
-      if (currentStatus) {
-        print('Remember true');
-        moveToNewsListView(context);
+      print('currentStatus ==>>> $currentStatus');
+      if (currentStatus != null) {
+        print('current not null');
+        if (currentStatus) {
+          print('Remember true');
+          moveToNewsListView(context);
+        }
       }
-    }
     });
   }
 
@@ -151,6 +151,7 @@ class _AuthenState extends State<Authen> {
         var userModel = UserModel.fromJson(data);
         truePassword = userModel.password.toString();
         idLogin = userModel.id;
+        typeLogin = userModel.type.toString();
       }
 
       if (password == truePassword) {
@@ -164,20 +165,20 @@ class _AuthenState extends State<Authen> {
     }
   }
 
-  setupSharePreferance()async{
+  setupSharePreferance() async {
     sharedPreferences = await SharedPreferences.getInstance();
     setState(() {
       sharedPreferences.setBool('Remember', statusRemember);
       sharedPreferences.setInt('id', idLogin);
       sharedPreferences.setString('Type', typeLogin);
     });
-
   }
 
   moveToNewsListView(BuildContext context) {
     var newsRoute = new MaterialPageRoute(
-        builder: (BuildContext context) => NewsListview());
-    Navigator.of(context).push(newsRoute);
+        builder: (BuildContext context) => ShowNewsList());
+    Navigator.of(context)
+        .pushAndRemoveUntil(newsRoute, (Route<dynamic> route) => false);
   }
 
   void showSnackBar(String message) {
