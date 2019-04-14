@@ -42,11 +42,13 @@ class _AuthenState extends State<Authen> {
       bool currentStatus = sharedPreferences.getBool('Remember');
       print('currentStatus ==>>> $currentStatus');
       if (currentStatus != null) {
-        print('current not null');
+        print('Remember ==> $currentStatus');
         if (currentStatus) {
           print('Remember true');
           moveToNewsListView(context);
         }
+      } else {
+        print('Remember ==> Null');
       }
     });
   }
@@ -171,6 +173,7 @@ class _AuthenState extends State<Authen> {
       sharedPreferences.setBool('Remember', statusRemember);
       sharedPreferences.setInt('id', idLogin);
       sharedPreferences.setString('Type', typeLogin);
+      sharedPreferences.commit();
     });
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -9,6 +10,8 @@ class ShowNewsList extends StatefulWidget {
 
 class _ShowNewsListState extends State<ShowNewsList> {
   String titleAppbar = 'ข่าวสาร น่ารู้';
+  String titleTooltip = 'ออกจากผู้ใช้';
+
   String myToken;
   String textValue = 'Show News List';
   bool rememberBool;
@@ -48,7 +51,8 @@ class _ShowNewsListState extends State<ShowNewsList> {
       rememberBool = sharePreferances.getBool('Remember');
       idLoginInt = sharePreferances.getInt('id');
       typeString = sharePreferances.getString('Type');
-      print('Receive from SharePreferance rememberBool => $rememberBool, idLogin => $idLoginInt, typeString => $typeString');
+      print(
+          'Receive from SharePreferance rememberBool => $rememberBool, idLogin => $idLoginInt, typeString => $typeString');
     });
   }
 
@@ -58,12 +62,35 @@ class _ShowNewsListState extends State<ShowNewsList> {
     setState(() {});
   }
 
+  Widget exitApp() {
+    return IconButton(
+      tooltip: titleTooltip,
+      icon: Icon(Icons.close),
+      onPressed: () {
+        clearSharePreferance();
+      },
+    );
+  }
+
+  void clearSharePreferance() async {
+    sharePreferances = await SharedPreferences.getInstance();
+    setState(() {
+      sharePreferances.clear();
+      print('Remember ===>> ${sharePreferances.getBool('Remember')}');
+      if (sharePreferances.getBool('Remember') == null) {
+        exit(0);
+      }
+    });
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(titleAppbar),
+        actions: <Widget>[exitApp()],
       ),
       body: new Center(
         child: Container(
