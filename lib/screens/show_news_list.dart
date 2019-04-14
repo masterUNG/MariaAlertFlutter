@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../models/news_model.dart';
+import '../listviews/news_listview.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -11,6 +15,9 @@ class ShowNewsList extends StatefulWidget {
 class _ShowNewsListState extends State<ShowNewsList> {
   String titleAppbar = 'ข่าวสาร น่ารู้';
   String titleTooltip = 'ออกจากผู้ใช้';
+
+  String urlJson = 'http://tscore.ms.ac.th/App/getAllFood.php';
+  List<NewsModel> newModels = [];
 
   String myToken;
   String textValue = 'Show News List';
@@ -24,6 +31,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
   @override
   void initState() {
+    getAllDataFromJson();
     getCredectial();
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
       print('onLaunch Call:');
@@ -42,6 +50,17 @@ class _ShowNewsListState extends State<ShowNewsList> {
       myToken = token;
       print('myToken ==>>> $myToken');
       updateToken(token);
+    });
+  }
+
+  void getAllDataFromJson() async{
+    var response = await http.get(urlJson);
+    var result = json.decode(response.body);
+    print(result);
+    setState(() {
+      for (var objJson in result) {
+        newModels.add(NewsModel.fromJSON(objJson));
+      }
     });
   }
 
@@ -92,11 +111,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
         title: Text(titleAppbar),
         actions: <Widget>[exitApp()],
       ),
-      body: new Center(
-        child: Container(
-          child: Text(textValue),
-        ),
-      ),
+      body: NewsListView(newModels)
     );
   }
 }
