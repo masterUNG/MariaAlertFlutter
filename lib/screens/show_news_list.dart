@@ -105,7 +105,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(titleAppbar),
