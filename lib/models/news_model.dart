@@ -6,8 +6,8 @@ class NewsModel {
 
   NewsModel.fromJSON(Map<String, dynamic> parseJSON) {
     id = int.parse(parseJSON['id']);
-    name = parseJSON['NameFood'];
+    name = parseJSON['Name'];
     detail = parseJSON['Detail'];
-    picture = parseJSON['ImagePath'];
+    picture = parseJSON['Picture'];
   }
 }

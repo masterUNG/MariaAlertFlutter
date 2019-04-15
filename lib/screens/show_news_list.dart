@@ -16,7 +16,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
   String titleAppbar = 'ข่าวสาร น่ารู้';
   String titleTooltip = 'ออกจากผู้ใช้';
 
-  String urlJson = 'http://tscore.ms.ac.th/App/getAllFood.php';
+  String urlJson = 'http://tscore.ms.ac.th/App/getAllNews.php';
   List<NewsModel> newModels = [];
 
   String myToken;

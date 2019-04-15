@@ -12,14 +12,22 @@ class NewsListView extends StatelessWidget {
     return Container(
       width: 170.0,
       child: Text(nameString,
-          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
+          style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.indigo[900])),
     );
   }
 
   Widget showDetail(String detailString) {
+    String detail = detailString;
+    if (detailString.length > 100) {
+      detail = detailString.substring(0, 100) + '...';
+    }
+
     return Container(
       width: 170.0,
-      child: Text(detailString),
+      child: Text(detail),
     );
   }
 
@@ -34,7 +42,7 @@ class NewsListView extends StatelessWidget {
               : BoxDecoration(color: Colors.blue[200]),
           child: Row(
             children: <Widget>[
-              Container(
+              Container(margin: EdgeInsets.all(10.0),
                 child:
                     Image.network(newsModels[index].picture, fit: BoxFit.cover),
                 constraints: BoxConstraints.expand(width: 150.0, height: 150.0),
