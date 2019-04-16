@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/news_model.dart';
 import '../listviews/news_listview.dart';
+import 'dart:async';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -26,19 +28,33 @@ class _ShowNewsListState extends State<ShowNewsList> {
   String typeString;
 
   FirebaseMessaging firebaseMessageing = new FirebaseMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
 
   SharedPreferences sharePreferances;
 
   @override
   void initState() {
+    // Get Data From Json for Create ListView
     getAllDataFromJson();
+
+    // Load Config Setting from SharePreferance
     getCredectial();
+
+    // About Firebase Messageing
+
+    var android = new AndroidInitializationSettings('mipmap/ic_launcher');
+    var iOS = new IOSInitializationSettings();
+    var platform = new InitializationSettings(android, iOS);
+    flutterLocalNotificationsPlugin.initialize(platform);
+
+
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
       print('onLaunch Call:');
     }, onResume: (Map<String, dynamic> msg) {
       print('onResume Call:');
     }, onMessage: (Map<String, dynamic> msg) {
       print('onMessage Call:');
+      showNotification(msg);
     });
     firebaseMessageing.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
@@ -53,7 +69,18 @@ class _ShowNewsListState extends State<ShowNewsList> {
     });
   }
 
-  void getAllDataFromJson() async{
+  void showNotification(Map<String, dynamic> message) async {
+    var android = new AndroidNotificationDetails(
+        'channelId', 'channelName', 'channelDescription',
+        sound: 'slow_spring_board',
+        importance: Importance.High,
+        priority: Priority.High);
+    var iOS = new IOSNotificationDetails();
+    var platform = new NotificationDetails(android, iOS);
+    await flutterLocalNotificationsPlugin.show(0, 'title', 'body', platform);
+  }
+
+  void getAllDataFromJson() async {
     var response = await http.get(urlJson);
     var result = json.decode(response.body);
     print(result);
@@ -70,8 +97,8 @@ class _ShowNewsListState extends State<ShowNewsList> {
       rememberBool = sharePreferances.getBool('Remember');
       idLoginInt = sharePreferances.getInt('id');
       typeString = sharePreferances.getString('Type');
-      print(
-          'Receive from SharePreferance rememberBool => $rememberBool, idLogin => $idLoginInt, typeString => $typeString');
+      // print(
+      //     'Receive from SharePreferance rememberBool => $rememberBool, idLogin => $idLoginInt, typeString => $typeString');
     });
   }
 
@@ -100,18 +127,17 @@ class _ShowNewsListState extends State<ShowNewsList> {
         exit(0);
       }
     });
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        backgroundColor: Colors.blue[900],
-        title: Text(titleAppbar),
-        actions: <Widget>[exitApp()],
-      ),
-      body: NewsListView(newModels)
-    );
+    return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          backgroundColor: Colors.blue[900],
+          title: Text(titleAppbar),
+          actions: <Widget>[exitApp()],
+        ),
+        body: NewsListView(newModels));
   }
 }
