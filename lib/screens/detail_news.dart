@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
 
 class DetailNews extends StatefulWidget {
   // id Receive From Tap ListView
@@ -10,16 +12,20 @@ class DetailNews extends StatefulWidget {
 }
 
 class _DetailNewsState extends State<DetailNews> {
-
-  // Explicit
-  int id;
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    id = widget.idNewsInt;
-    print('id ==> $id');
+    int id = widget.idNewsInt;
+    getNewsFromJSON(id);
+  }
+
+  getNewsFromJSON(int idInt) async {
+    
+    String urlString = "http://tscore.ms.ac.th/App/getNewsWhereId.php?isAdd=true&id=$idInt";
+    var response = await get(urlString);
+    var result = json.decode(response.body);
+    print('id ==> $idInt, result ==> $result');
   }
 
   @override
