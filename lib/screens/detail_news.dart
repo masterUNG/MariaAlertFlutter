@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
+import '../models/news_model.dart';
+import '../listviews/detail_listview.dart';
 
 class DetailNews extends StatefulWidget {
   // id Receive From Tap ListView
@@ -12,6 +14,8 @@ class DetailNews extends StatefulWidget {
 }
 
 class _DetailNewsState extends State<DetailNews> {
+  NewsModel newsModel;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -21,11 +25,16 @@ class _DetailNewsState extends State<DetailNews> {
   }
 
   getNewsFromJSON(int idInt) async {
-    
-    String urlString = "http://tscore.ms.ac.th/App/getNewsWhereId.php?isAdd=true&id=$idInt";
+    String urlString =
+        "http://tscore.ms.ac.th/App/getNewsWhereId.php?isAdd=true&id=$idInt";
     var response = await get(urlString);
     var result = json.decode(response.body);
     print('id ==> $idInt, result ==> $result');
+    for (var objJson in result) {
+      setState(() {
+        newsModel = NewsModel.fromJSON(objJson);
+      });
+    }
   }
 
   @override
@@ -34,7 +43,7 @@ class _DetailNewsState extends State<DetailNews> {
       appBar: AppBar(
         title: Text('Detail News'),
       ),
-      body: Text('Body Detail News'),
+      body: DetailListView(newsModel),
     );
   }
 }
