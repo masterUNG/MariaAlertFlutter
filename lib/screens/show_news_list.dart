@@ -42,11 +42,12 @@ class _ShowNewsListState extends State<ShowNewsList> {
     getCredectial();
 
     // About Firebase Messageing
-
     var android = new AndroidInitializationSettings('mipmap/ic_launcher');
     var iOS = new IOSInitializationSettings();
     var platform = new InitializationSettings(android, iOS);
-    flutterLocalNotificationsPlugin.initialize(platform);
+    flutterLocalNotificationsPlugin.initialize(platform,
+        onSelectNotification:
+            onSelectNotification); 
 
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
       print('onLaunch Call:');
@@ -68,18 +69,18 @@ class _ShowNewsListState extends State<ShowNewsList> {
       print('myToken ==>>> $myToken');
       updateToken(token);
     });
-  }
+  } // initial
 
-  // void showNotification(Map<String, dynamic> message) async {
-  //   var android = new AndroidNotificationDetails(
-  //       'channelId', 'channelName', 'channelDescription',
-  //       sound: 'slow_spring_board',
-  //       importance: Importance.High,
-  //       priority: Priority.High);
-  //   var iOS = new IOSNotificationDetails();
-  //   var platform = new NotificationDetails(android, iOS);
-  //   await flutterLocalNotificationsPlugin.show(0, 'title', 'body', platform);
-  // }
+  Future onSelectNotification(String payload) {
+    debugPrint("payload : $payload");
+    showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+            title: new Text('Notification'),
+            content: new Text('$payload'),
+          ),
+    );
+  }
 
   void showNotification() async {
     print('showNoti Work');
@@ -89,8 +90,8 @@ class _ShowNewsListState extends State<ShowNewsList> {
     var iOS = new IOSNotificationDetails();
     var platform = new NotificationDetails(android, iOS);
     await flutterLocalNotificationsPlugin.show(
-        0, 'New Video is out', 'Flutter Local Notification', platform,
-        payload: 'Nitish Kumar Singh is part time Youtuber');
+        0, 'ข้อความจาก มาลี', 'ข่าวสาร ต่างๆ จาก มาลี', platform,
+        payload: 'ข่าวสาร รายละเอียดเต็มๆ จาก มาลี');
   }
 
   void getAllDataFromJson() async {
