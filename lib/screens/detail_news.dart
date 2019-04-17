@@ -30,11 +30,11 @@ class _DetailNewsState extends State<DetailNews> {
     var response = await get(urlString);
     var result = json.decode(response.body);
     print('id ==> $idInt, result ==> $result');
-    for (var objJson in result) {
-      setState(() {
-        newsModel = NewsModel.fromJSON(objJson);
-      });
+    setState(() {
+      for (var objJson in result) {
+      newsModel = NewsModel.fromJSON(objJson);
     }
+    });
   }
 
   @override
