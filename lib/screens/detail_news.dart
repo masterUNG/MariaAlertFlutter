@@ -3,6 +3,7 @@ import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/news_model.dart';
 import '../listviews/detail_listview.dart';
+import 'dart:async';
 
 class DetailNews extends StatefulWidget {
   // id Receive From Tap ListView

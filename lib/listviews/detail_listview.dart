@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/news_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class DetailListView extends StatelessWidget {
   NewsModel newsModel;
@@ -22,9 +23,8 @@ class DetailListView extends StatelessWidget {
   }
 
   Widget showDetail() {
-    return Container(margin: EdgeInsets.all(15.0),
-      child: Text(newsModel.detail.toString())
-    );
+    return Container(
+        margin: EdgeInsets.all(15.0), child: Text(newsModel.detail.toString()));
   }
 
   @override
@@ -42,7 +42,8 @@ class DetailListView extends StatelessWidget {
         Container(
           alignment: Alignment(0, -1),
           child: showTitle(),
-        ), showDetail()
+        ),
+        showDetail()
       ],
     );
   }
