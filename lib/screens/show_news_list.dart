@@ -28,7 +28,8 @@ class _ShowNewsListState extends State<ShowNewsList> {
   String typeString;
 
   FirebaseMessaging firebaseMessageing = new FirebaseMessaging();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
 
   SharedPreferences sharePreferances;
 
@@ -47,14 +48,14 @@ class _ShowNewsListState extends State<ShowNewsList> {
     var platform = new InitializationSettings(android, iOS);
     flutterLocalNotificationsPlugin.initialize(platform);
 
-
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
       print('onLaunch Call:');
     }, onResume: (Map<String, dynamic> msg) {
       print('onResume Call:');
     }, onMessage: (Map<String, dynamic> msg) {
       print('onMessage Call:');
-      showNotification(msg);
+      // showNotification(msg);
+      showNotification();
     });
     firebaseMessageing.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
@@ -69,15 +70,27 @@ class _ShowNewsListState extends State<ShowNewsList> {
     });
   }
 
-  void showNotification(Map<String, dynamic> message) async {
+  // void showNotification(Map<String, dynamic> message) async {
+  //   var android = new AndroidNotificationDetails(
+  //       'channelId', 'channelName', 'channelDescription',
+  //       sound: 'slow_spring_board',
+  //       importance: Importance.High,
+  //       priority: Priority.High);
+  //   var iOS = new IOSNotificationDetails();
+  //   var platform = new NotificationDetails(android, iOS);
+  //   await flutterLocalNotificationsPlugin.show(0, 'title', 'body', platform);
+  // }
+
+  void showNotification() async {
+    print('showNoti Work');
     var android = new AndroidNotificationDetails(
-        'channelId', 'channelName', 'channelDescription',
-        sound: 'slow_spring_board',
-        importance: Importance.High,
-        priority: Priority.High);
+        'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
+        priority: Priority.High, importance: Importance.Max);
     var iOS = new IOSNotificationDetails();
     var platform = new NotificationDetails(android, iOS);
-    await flutterLocalNotificationsPlugin.show(0, 'title', 'body', platform);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'New Video is out', 'Flutter Local Notification', platform,
+        payload: 'Nitish Kumar Singh is part time Youtuber');
   }
 
   void getAllDataFromJson() async {
