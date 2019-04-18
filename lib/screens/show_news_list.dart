@@ -17,6 +17,7 @@ class ShowNewsList extends StatefulWidget {
 class _ShowNewsListState extends State<ShowNewsList> {
   String titleAppbar = 'ข่าวสาร น่ารู้';
   String titleTooltip = 'ออกจากผู้ใช้';
+  String titleNotification = 'ข้อความจาก มาลี';
 
   String urlJson = 'http://tscore.ms.ac.th/App/getAllNews.php';
   List<NewsModel> newModels = [];
@@ -27,6 +28,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
   int idLoginInt;
   String typeString;
 
+  //  Abour Firebase
   FirebaseMessaging firebaseMessageing = new FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
@@ -55,8 +57,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
       print('onResume Call:');
     }, onMessage: (Map<String, dynamic> msg) {
       print('onMessage Call:');
-      // showNotification(msg);
-      showNotification();
+      showNotification(msg);
     });
     firebaseMessageing.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
@@ -76,14 +77,14 @@ class _ShowNewsListState extends State<ShowNewsList> {
     showDialog(
       context: context,
       builder: (_) => new AlertDialog(
-            title: new Text('Notification'),
+            title: new Text(titleNotification),
             content: new Text('$payload'),
           ),
     );
   }
 
-  void showNotification() async {
-    print('showNoti Work');
+  void showNotification(Map<String, dynamic> msg) async {
+    print('showNoti Work msg ==> $msg');
     var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
         priority: Priority.High, importance: Importance.Max);
