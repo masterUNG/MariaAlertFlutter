@@ -56,7 +56,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     }, onResume: (Map<String, dynamic> msg) {
       print('onResume Call:');
     }, onMessage: (Map<String, dynamic> msg) {
-      print('onMessage Call:');
+      print('onMessage Call: ==> $msg');
       showNotification(msg);
     });
     firebaseMessageing.requestNotificationPermissions(
