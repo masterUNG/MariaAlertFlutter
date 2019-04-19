@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'show_news_list.dart';
+import 'register.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -28,6 +29,8 @@ class _AuthenState extends State<Authen> {
   String messageHaveSpacePassword = 'กรุณากรอก รหัส คะ';
   String messageUserFalse = 'ไม่มี ชื่อใช้งานนี้ใน ฐานข้อมูล คะ';
   String messagePasswordFalse = 'ลองใหม่ รหัสผิด คะ';
+  String titleRegister = 'สมัครใช้งานแอพ :';
+  String labelRegister = 'สมัคร';
 
   @override
   void initState() {
@@ -197,6 +200,35 @@ class _AuthenState extends State<Authen> {
     scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
+  Widget myRegisger(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Text(
+            titleRegister,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          RaisedButton(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
+            color: Colors.blue[900],
+            child: Text(
+              labelRegister,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            onPressed: () {
+              var goToRegister = new MaterialPageRoute(
+                  builder: (BuildContext context) => Register());
+                  Navigator.of(context).push(goToRegister);
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -228,7 +260,8 @@ class _AuthenState extends State<Authen> {
                         ),
                       )
                     ],
-                  )
+                  ),
+                  myRegisger(context)
                 ],
               ),
             ),
