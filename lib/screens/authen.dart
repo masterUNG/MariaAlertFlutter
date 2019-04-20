@@ -62,12 +62,15 @@ class _AuthenState extends State<Authen> {
 
   Widget userTextFromField() {
     return TextFormField(
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(20.0)),
           hintStyle: TextStyle(color: Colors.white),
           labelText: titleUser,
           hintText: 'Your User',
-          labelStyle:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          labelStyle: TextStyle(color: Colors.white)),
       validator: (String value) {
         if (value.length == 0) {
           return messageHaveSpaceUser;
@@ -82,11 +85,14 @@ class _AuthenState extends State<Authen> {
   Widget passwordTextFromField() {
     return TextFormField(
       decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white, width: 1.0),
+              borderRadius: BorderRadius.circular(20.0)),
           hintStyle: TextStyle(color: Colors.white),
           labelText: titlePassword,
           hintText: 'Your Password',
           labelStyle:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              TextStyle(color: Colors.white)),
       validator: (String value) {
         if (value.length == 0) {
           return messageHaveSpacePassword;
@@ -103,7 +109,7 @@ class _AuthenState extends State<Authen> {
       controlAffinity: ListTileControlAffinity.leading,
       title: Text(
         titleRemember,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(color: Colors.white),
       ),
       value: statusRemember,
       onChanged: (bool value) {
@@ -207,7 +213,7 @@ class _AuthenState extends State<Authen> {
         children: <Widget>[
           Text(
             titleRegister,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white),
           ),
           RaisedButton(
             shape: RoundedRectangleBorder(
@@ -221,7 +227,7 @@ class _AuthenState extends State<Authen> {
             onPressed: () {
               var goToRegister = new MaterialPageRoute(
                   builder: (BuildContext context) => Register());
-                  Navigator.of(context).push(goToRegister);
+              Navigator.of(context).push(goToRegister);
             },
           )
         ],
@@ -249,8 +255,13 @@ class _AuthenState extends State<Authen> {
                     constraints: BoxConstraints.expand(width: 150, height: 150),
                     child: showLogo(),
                   ),
-                  userTextFromField(),
-                  passwordTextFromField(),
+                  Container(margin: EdgeInsets.only(top: 10.0),
+                    child: userTextFromField(),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10.0),
+                    child: passwordTextFromField(),
+                  ),
                   rememberCheckBox(),
                   Row(
                     children: <Widget>[
