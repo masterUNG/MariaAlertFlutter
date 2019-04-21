@@ -19,9 +19,10 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
           labelText: titleUser,
           hintText: hindUser,
+          labelStyle: TextStyle(color: Colors.white),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15.0),
-              borderSide: BorderSide(color: Colors.grey, width: 1.0))),
+              borderSide: BorderSide(color: Colors.white, width: 1.0))),
     );
   }
 
@@ -30,9 +31,17 @@ class _RegisterState extends State<Register> {
       decoration: InputDecoration(
           labelText: titlePassword,
           hintText: hiddPassword,
+          labelStyle: TextStyle(color: Colors.white),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15.0),
-              borderSide: BorderSide(color: Colors.grey, width: 1.0))),
+              borderSide: BorderSide(color: Colors.white, width: 1.0))),
+    );
+  }
+
+  Widget uploadToServer(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.cloud_upload),
+      onPressed: () {print('Click Upload');},
     );
   }
 
@@ -41,15 +50,20 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
-        title: Text(titleAppBar),
+        title: Text(titleAppBar),actions: <Widget>[uploadToServer(context)],
       ),
       body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment(-1, -1),
+                colors: [Colors.blue[50], Colors.blue[900]])),
         padding: EdgeInsets.only(left: 50.0, right: 50.0, top: 50.0),
         alignment: Alignment(0, -1),
         child: Column(
           children: <Widget>[
             userTextFormField(),
-            Container(margin: EdgeInsets.only(top: 8.0),
+            Container(
+              margin: EdgeInsets.only(top: 8.0),
               child: passwordTextFormField(),
             )
           ],
