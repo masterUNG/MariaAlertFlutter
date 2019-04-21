@@ -66,7 +66,7 @@ class _AuthenState extends State<Authen> {
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.white, width: 1.0),
-              borderRadius: BorderRadius.circular(20.0)),
+              borderRadius: BorderRadius.circular(15.0)),
           hintStyle: TextStyle(color: Colors.white),
           labelText: titleUser,
           hintText: 'Your User',
@@ -87,7 +87,7 @@ class _AuthenState extends State<Authen> {
       decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.white, width: 1.0),
-              borderRadius: BorderRadius.circular(20.0)),
+              borderRadius: BorderRadius.circular(15.0)),
           hintStyle: TextStyle(color: Colors.white),
           labelText: titlePassword,
           hintText: 'Your Password',
@@ -246,7 +246,7 @@ class _AuthenState extends State<Authen> {
             padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [Colors.lightBlue[900], Colors.lightBlue[50]],
+                    colors: [Colors.lightBlue[50], Colors.blue[700]],
                     begin: Alignment(-1, -1))),
             child: Container(
               child: Column(
