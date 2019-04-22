@@ -59,12 +59,14 @@ class _ShowNewsListState extends State<ShowNewsList> {
       print('onMessage Call: ==> $msg');
       showNotification(msg);
     });
+
     firebaseMessageing.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
     firebaseMessageing.onIosSettingsRegistered
         .listen((IosNotificationSettings setting) {
       print('Ios Setting Registed');
     });
+    
     firebaseMessageing.getToken().then((token) {
       myToken = token;
       print('myToken ==>>> $myToken');
