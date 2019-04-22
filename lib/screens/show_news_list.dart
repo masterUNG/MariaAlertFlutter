@@ -8,6 +8,7 @@ import '../models/news_model.dart';
 import '../listviews/news_listview.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../models/noti_model.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -44,17 +45,16 @@ class _ShowNewsListState extends State<ShowNewsList> {
     getCredectial();
 
     // About Firebase Messageing
-    var android = new AndroidInitializationSettings('mipmap/ic_launcher');
+    var android = new AndroidInitializationSettings('app_icon');
     var iOS = new IOSInitializationSettings();
     var platform = new InitializationSettings(android, iOS);
     flutterLocalNotificationsPlugin.initialize(platform,
-        onSelectNotification:
-            onSelectNotification); 
+        onSelectNotification: onSelectNotification);
 
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
-      print('onLaunch Call:');
+      print('onLaunch Call: ==> $msg');
     }, onResume: (Map<String, dynamic> msg) {
-      print('onResume Call:');
+      print('onResume Call: ==> $msg');
     }, onMessage: (Map<String, dynamic> msg) {
       print('onMessage Call: ==> $msg');
       showNotification(msg);
@@ -62,11 +62,12 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
     firebaseMessageing.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, alert: true, badge: true));
+
     firebaseMessageing.onIosSettingsRegistered
         .listen((IosNotificationSettings setting) {
       print('Ios Setting Registed');
     });
-    
+
     firebaseMessageing.getToken().then((token) {
       myToken = token;
       print('myToken ==>>> $myToken');
@@ -87,14 +88,22 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
   void showNotification(Map<String, dynamic> msg) async {
     print('showNoti Work msg ==> $msg');
+
+    var objNotification = msg['notification'];
+    print('objNoti ==> $objNotification');
+
+    var notiModel = NotiModel.fromJSON(objNotification);
+    String title = notiModel.title.toString();
+    String body = notiModel.body.toString();
+
     var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
         priority: Priority.High, importance: Importance.Max);
     var iOS = new IOSNotificationDetails();
     var platform = new NotificationDetails(android, iOS);
     await flutterLocalNotificationsPlugin.show(
-        0, 'ข้อความจาก มาลี', 'ข่าวสาร ต่างๆ จาก มาลี', platform,
-        payload: 'ข่าวสาร รายละเอียดเต็มๆ จาก มาลี');
+        0, title, body, platform,
+        payload: body);
   }
 
   void getAllDataFromJson() async {
