@@ -9,6 +9,7 @@ import '../listviews/news_listview.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/noti_model.dart';
+import './show_notification.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -75,15 +76,28 @@ class _ShowNewsListState extends State<ShowNewsList> {
     });
   } // initial
 
-  Future onSelectNotification(String payload) {
+  Future onSelectNotification(String payload) async {
     debugPrint("payload : $payload");
-    showDialog(
-      context: context,
-      builder: (_) => new AlertDialog(
-            title: new Text(titleNotification),
-            content: new Text('$payload'),
-          ),
-    );
+
+    if (payload == null) {
+      payload = "Message is null";
+    }
+
+    var goToShowNoti = MaterialPageRoute(
+        builder: (BuildContext context) => ShowNotificationMessage(messageString: payload,));
+    await Navigator.push(context, goToShowNoti);
+
+    // showDialog(
+    //   context: context,
+    //   builder: (_) => new AlertDialog(
+    //         title: new Text(titleNotification),
+    //         content: new Text('$payload'),
+    //       ),
+    // );
+  }
+
+  void doingClickNoti() {
+    print('doingClickNoti Work');
   }
 
   void showNotification(Map<String, dynamic> msg) async {
@@ -99,10 +113,10 @@ class _ShowNewsListState extends State<ShowNewsList> {
     var android = new AndroidNotificationDetails(
         'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
         priority: Priority.High, importance: Importance.Max);
+
     var iOS = new IOSNotificationDetails();
     var platform = new NotificationDetails(android, iOS);
-    await flutterLocalNotificationsPlugin.show(
-        0, title, body, platform,
+    await flutterLocalNotificationsPlugin.show(0, title, body, platform,
         payload: body);
   }
 
