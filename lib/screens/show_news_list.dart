@@ -84,7 +84,9 @@ class _ShowNewsListState extends State<ShowNewsList> {
     }
 
     var goToShowNoti = MaterialPageRoute(
-        builder: (BuildContext context) => ShowNotificationMessage(messageString: payload,));
+        builder: (BuildContext context) => ShowNotificationMessage(
+              messageString: payload,
+            ));
     await Navigator.push(context, goToShowNoti);
 
     // showDialog(
@@ -158,6 +160,22 @@ class _ShowNewsListState extends State<ShowNewsList> {
     );
   }
 
+  Widget menuDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          DrawerHeader(
+            child: Container(
+              child: Column(
+                children: <Widget>[Text('Drawer Memu')],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   void clearSharePreferance() async {
     sharePreferances = await SharedPreferences.getInstance();
     setState(() {
@@ -172,12 +190,14 @@ class _ShowNewsListState extends State<ShowNewsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-          backgroundColor: Colors.blue[900],
-          title: Text(titleAppbar),
-          actions: <Widget>[exitApp()],
-        ),
-        body: NewsListView(newModels));
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        backgroundColor: Colors.blue[900],
+        title: Text(titleAppbar),
+        actions: <Widget>[exitApp()],
+      ),
+      body: NewsListView(newModels),
+      drawer: menuDrawer(context),
+    );
   }
 }
