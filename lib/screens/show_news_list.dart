@@ -11,6 +11,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/noti_model.dart';
 import './show_notification.dart';
 import './show_children_list.dart';
+import './add_children.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -200,17 +201,42 @@ class _ShowNewsListState extends State<ShowNewsList> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.child_friendly, color: Colors.blue,),
+            leading: Icon(
+              Icons.child_friendly,
+              color: Colors.blue,
+            ),
             title: Text(
               'บุตรหลานของ ท่าน',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.blue[600]),
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue[800]),
             ),
             onTap: () {
               print('Click Memu1');
-              var showChildrenListRoute = MaterialPageRoute(builder: (BuildContext context) => ShowChildrenList());
+              var showChildrenListRoute = MaterialPageRoute(
+                  builder: (BuildContext context) => ShowChildrenList());
               Navigator.of(context).pop();
               Navigator.of(context).push(showChildrenListRoute);
-              
+            },
+          ),
+          ListTile(
+            title: Text(
+              'เพิ่ม บุตร หลาน ของท่าน',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue[800]),
+            ),
+            leading: Icon(
+              Icons.group_add,
+              color: Colors.blue,
+            ),
+            onTap: () {
+              var addChildrenRoute = MaterialPageRoute(
+                  builder: (BuildContext context) => AddChildren());
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(addChildrenRoute);
             },
           )
         ],
