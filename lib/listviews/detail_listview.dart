@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/news_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class DetailListView extends StatelessWidget {
   NewsModel newsModel;

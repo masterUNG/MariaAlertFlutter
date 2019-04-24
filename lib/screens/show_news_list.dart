@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../models/noti_model.dart';
 import './show_notification.dart';
+import './show_children_list.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
   String urlJson = 'http://tscore.ms.ac.th/App/getAllNews.php';
   List<NewsModel> newModels = [];
+  List<NotiModel> notiModels = [];
 
   String myToken;
   String textValue = 'Show News List';
@@ -54,11 +56,21 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
       print('onLaunch Call: ==> $msg');
+      setState(() {
+        var notimodel = NotiModel.fromDATA(msg);
+        notiModels.add(notimodel);
+      });
     }, onResume: (Map<String, dynamic> msg) {
       print('onResume Call: ==> $msg');
     }, onMessage: (Map<String, dynamic> msg) {
       print('onMessage Call: ==> $msg');
-      showNotification(msg);
+      setState(() {
+        var notiModel = NotiModel.fromOBJECT(msg);
+        notiModels.add(notiModel);
+        showNotification(msg);
+        print(
+            'title ==> ${notiModels[0].title.toString()}, body ==> ${notiModels[0].body.toString()}');
+      });
     });
 
     firebaseMessageing.requestNotificationPermissions(
@@ -69,6 +81,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
       print('Ios Setting Registed');
     });
 
+    // Find Token
     firebaseMessageing.getToken().then((token) {
       myToken = token;
       print('myToken ==>>> $myToken');
@@ -96,10 +109,6 @@ class _ShowNewsListState extends State<ShowNewsList> {
     //         content: new Text('$payload'),
     //       ),
     // );
-  }
-
-  void doingClickNoti() {
-    print('doingClickNoti Work');
   }
 
   void showNotification(Map<String, dynamic> msg) async {
@@ -161,15 +170,48 @@ class _ShowNewsListState extends State<ShowNewsList> {
   }
 
   Widget menuDrawer(BuildContext context) {
+    String titleH1 = 'โรงเรียนมารีย์อนุสรณ์';
+    String titleH2 = 'อำเภอเมือง จังหวัดบุรีรัมย์';
     return Drawer(
       child: ListView(
         children: <Widget>[
           DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blue[300]),
             child: Container(
+              padding: EdgeInsets.only(top: 10.0),
               child: Column(
-                children: <Widget>[Text('Drawer Memu')],
+                children: <Widget>[
+                  Container(
+                    width: 70.0,
+                    height: 70.0,
+                    child: Image.asset('images/logo1.png'),
+                  ),
+                  Text(
+                    titleH1,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    titleH2,
+                    style: TextStyle(color: Colors.white),
+                  )
+                ],
               ),
             ),
+          ),
+          ListTile(
+            leading: Icon(Icons.child_friendly, color: Colors.blue,),
+            title: Text(
+              'บุตรหลานของ ท่าน',
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.blue[600]),
+            ),
+            onTap: () {
+              print('Click Memu1');
+              var showChildrenListRoute = MaterialPageRoute(builder: (BuildContext context) => ShowChildrenList());
+              Navigator.of(context).pop();
+              Navigator.of(context).push(showChildrenListRoute);
+              
+            },
           )
         ],
       ),
