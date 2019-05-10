@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'dart:developer';
 
 class AddChildren extends StatefulWidget {
   @override
@@ -30,7 +31,8 @@ class _AddChildrenState extends State<AddChildren> {
       ),
       onPressed: () {
         scanQR();
-        print('QRcode ==> $barcode');
+        debugPrint('QRcode ==> $barcode');
+        log('qrCode: $barcode');
       },
     );
   }

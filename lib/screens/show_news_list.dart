@@ -62,15 +62,19 @@ class _ShowNewsListState extends State<ShowNewsList> {
         notiModels.add(notimodel);
       });
     }, onResume: (Map<String, dynamic> msg) {
-      print('onResume Call: ==> $msg');
-    }, onMessage: (Map<String, dynamic> msg) {
-      print('onMessage Call: ==> $msg');
       setState(() {
-        var notiModel = NotiModel.fromOBJECT(msg);
-        notiModels.add(notiModel);
-        showNotification(msg);
-        print(
-            'title ==> ${notiModels[0].title.toString()}, body ==> ${notiModels[0].body.toString()}');
+        print('onResume Call: ==> $msg');
+      });
+    }, onMessage: (Map<String, dynamic> msg) {
+      setState(() {
+        print('onMessage Call: ==> $msg');
+        showDialog();
+
+        // var notiModel = NotiModel.fromOBJECT(msg);
+        // notiModels.add(notiModel);
+        // showNotification(msg);
+        // print(
+        //     'title ==> ${notiModels[0].title.toString()}, body ==> ${notiModels[0].body.toString()}');
       });
     });
 
@@ -110,6 +114,29 @@ class _ShowNewsListState extends State<ShowNewsList> {
     //         content: new Text('$payload'),
     //       ),
     // );
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Alert Dialog title"),
+          content: new Text("Alert Dialog body"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void showNotification(Map<String, dynamic> msg) async {
@@ -235,8 +262,8 @@ class _ShowNewsListState extends State<ShowNewsList> {
             onTap: () {
               var addChildrenRoute = MaterialPageRoute(
                   builder: (BuildContext context) => AddChildren());
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(addChildrenRoute);
+              Navigator.of(context).pop();
+              Navigator.of(context).push(addChildrenRoute);
             },
           )
         ],
