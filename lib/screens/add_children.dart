@@ -12,6 +12,7 @@ class AddChildren extends StatefulWidget {
 class _AddChildrenState extends State<AddChildren> {
   String titleAppBar = 'เพิ่มบุตร หลาน ของท่าน';
   String barcode = '';
+  TextEditingController textEditingController = new TextEditingController();
 
   Widget showName() {
     return Text(
@@ -33,6 +34,11 @@ class _AddChildrenState extends State<AddChildren> {
         scanQR();
         debugPrint('QRcode ==> $barcode');
         log('qrCode: $barcode');
+        
+        if (barcode.length != 0) {
+          textEditingController.text = barcode;
+        }
+
       },
     );
   }
@@ -70,9 +76,16 @@ class _AddChildrenState extends State<AddChildren> {
     }
   }
 
+  Widget qrTextFormField() {
+    return TextFormField(
+      controller: textEditingController,
+      decoration: InputDecoration(labelText: 'QR Readed'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(titleAppBar),
@@ -93,6 +106,9 @@ class _AddChildrenState extends State<AddChildren> {
             Container(
               margin: EdgeInsets.only(top: 20.0),
               child: showName(),
+            ),
+            Container(width: 100.0,
+              child: qrTextFormField(),
             ),
             Container(
               width: 250.0,
