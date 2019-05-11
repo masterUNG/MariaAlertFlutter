@@ -63,18 +63,17 @@ class _ShowNewsListState extends State<ShowNewsList> {
       });
     }, onResume: (Map<String, dynamic> msg) {
       setState(() {
-        print('onResume Call: ==> $msg');
+        setState(() {
+          print('onResume Call: ==> $msg');
+          var notiModel = NotiModel.fromOBJECT(msg);
+          _showDialog(notiModel.title.toString() ,notiModel.body.toString());
+        });
       });
     }, onMessage: (Map<String, dynamic> msg) {
       setState(() {
         print('onMessage Call: ==> $msg');
-        showDialog();
-
-        // var notiModel = NotiModel.fromOBJECT(msg);
-        // notiModels.add(notiModel);
-        // showNotification(msg);
-        // print(
-        //     'title ==> ${notiModels[0].title.toString()}, body ==> ${notiModels[0].body.toString()}');
+        var notiModel = NotiModel.fromOBJECT(msg);
+        _showDialog(notiModel.title.toString() , notiModel.body.toString());
       });
     });
 
@@ -101,11 +100,13 @@ class _ShowNewsListState extends State<ShowNewsList> {
       payload = "Message is null";
     }
 
-    var goToShowNoti = MaterialPageRoute(
-        builder: (BuildContext context) => ShowNotificationMessage(
-              messageString: payload,
-            ));
-    await Navigator.push(context, goToShowNoti);
+      _showDialog("ข่าวสาร จาก มาลี", "นักเรียน ได้เข้าโรงเรียนแล้ว คะ");
+
+    // var goToShowNoti = MaterialPageRoute(
+    //     builder: (BuildContext context) => ShowNotificationMessage(
+    //           messageString: payload,
+    //         ));
+    // await Navigator.push(context, goToShowNoti);
 
     // showDialog(
     //   context: context,
@@ -116,15 +117,15 @@ class _ShowNewsListState extends State<ShowNewsList> {
     // );
   }
 
-  void _showDialog() {
+  void _showDialog(String title ,String message) {
     // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Alert Dialog title"),
-          content: new Text("Alert Dialog body"),
+          title: new Text(title),
+          content: new Text(message),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(

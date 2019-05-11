@@ -10,7 +10,7 @@ class NotiModel {
   }
 
   NotiModel.fromOBJECT(Map<String, dynamic> parseOBJECT) {
-    Map map = parseOBJECT['notification'];
+    Map map = parseOBJECT['data'];
     title = map['title'];
     body = map['body'];
   }
