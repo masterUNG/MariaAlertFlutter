@@ -34,11 +34,10 @@ class _AddChildrenState extends State<AddChildren> {
         scanQR();
         debugPrint('QRcode ==> $barcode');
         log('qrCode: $barcode');
-        
+
         if (barcode.length != 0) {
           textEditingController.text = barcode;
         }
-
       },
     );
   }
@@ -55,6 +54,14 @@ class _AddChildrenState extends State<AddChildren> {
         'Save',
         style: TextStyle(color: Colors.white),
       ),
+      onPressed: () {},
+    );
+  }
+
+  Widget findChildren() {
+    return RaisedButton(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      child: Text('Find'),
       onPressed: () {},
     );
   }
@@ -85,7 +92,8 @@ class _AddChildrenState extends State<AddChildren> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(resizeToAvoidBottomPadding: false,
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(titleAppBar),
@@ -107,8 +115,13 @@ class _AddChildrenState extends State<AddChildren> {
               margin: EdgeInsets.only(top: 20.0),
               child: showName(),
             ),
-            Container(width: 100.0,
-              child: qrTextFormField(),
+            Container(width: 250.0,
+              child: Row(
+                children: <Widget>[
+                  Expanded(child: qrTextFormField(),),
+                  findChildren()
+                ],
+              ),
             ),
             Container(
               width: 250.0,
