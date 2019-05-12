@@ -3,6 +3,8 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'dart:developer';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
 
 class AddChildren extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class AddChildren extends StatefulWidget {
 class _AddChildrenState extends State<AddChildren> {
   String titleAppBar = 'เพิ่มบุตร หลาน ของท่าน';
   String barcode = '';
+  final formKey = GlobalKey<FormState>();
+  final snackBarKey = GlobalKey<ScaffoldState>();
   TextEditingController textEditingController = new TextEditingController();
 
   Widget showName() {
@@ -62,8 +66,37 @@ class _AddChildrenState extends State<AddChildren> {
     return RaisedButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       child: Text('Find'),
-      onPressed: () {},
+      onPressed: () {
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          loadChildren();
+        }
+      },
     );
+  }
+
+  Future loadChildren() async {
+    String url =
+        'http://tscore.ms.ac.th/App/getStudentWhereQR.php?isAdd=true&idcode=$barcode';
+    var response = await get(url);
+    var result = json.decode(response.body);
+    print('result ==> $result');
+
+    if (result.toString() == 'null') {
+      showSnackBar('ไม่มี QR code นี่ใน ฐานข้อมูล');
+    } else {}
+  }
+
+  void showSnackBar(String message) {
+    SnackBar snackBar = SnackBar(
+      content: Text(message,style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),),
+      backgroundColor: Colors.orange[300],
+      duration: Duration(seconds: 6),
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+      ),
+    );snackBarKey.currentState.showSnackBar(snackBar);
   }
 
   Future scanQR() async {
@@ -86,57 +119,74 @@ class _AddChildrenState extends State<AddChildren> {
   Widget qrTextFormField() {
     return TextFormField(
       controller: textEditingController,
-      decoration: InputDecoration(labelText: 'QR Readed'),
+      decoration: InputDecoration(
+        labelText: 'QR Readed',
+        labelStyle: TextStyle(color: Colors.white),
+      ),
+      validator: (String value) {
+        if (value.length == 0) {
+          return 'Have Space';
+        }
+      },
+      onSaved: (String value) {
+        barcode = value;
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(key: snackBarKey,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         title: Text(titleAppBar),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.white, Colors.blue[900]],
-                begin: Alignment(-1, -1))),
-        padding: EdgeInsets.only(top: 100.0),
-        alignment: Alignment(0, -1),
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 150.0,
-              child: showAvata(),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              child: showName(),
-            ),
-            Container(width: 250.0,
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: qrTextFormField(),),
-                  findChildren()
-                ],
+      body: Form(
+        key: formKey,
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.white, Colors.blue[900]],
+                  begin: Alignment(-1, -1))),
+          padding: EdgeInsets.only(top: 100.0),
+          alignment: Alignment(0, -1),
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 150.0,
+                child: showAvata(),
               ),
-            ),
-            Container(
-              width: 250.0,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: scanButton(),
-                  ),
-                  Expanded(
-                    child: saveChildrenButton(),
-                  )
-                ],
+              Container(
+                margin: EdgeInsets.only(top: 20.0),
+                child: showName(),
               ),
-            )
-          ],
+              Container(
+                width: 250.0,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: qrTextFormField(),
+                    ),
+                    findChildren()
+                  ],
+                ),
+              ),
+              Container(
+                width: 250.0,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: scanButton(),
+                    ),
+                    Expanded(
+                      child: saveChildrenButton(),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
