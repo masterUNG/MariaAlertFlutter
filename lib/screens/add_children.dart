@@ -89,14 +89,18 @@ class _AddChildrenState extends State<AddChildren> {
 
   void showSnackBar(String message) {
     SnackBar snackBar = SnackBar(
-      content: Text(message,style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),),
-      backgroundColor: Colors.orange[300],
+      content: Text(
+        message,
+        style: TextStyle(color: Colors.blue[800], fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.orange[200],
       duration: Duration(seconds: 6),
       action: SnackBarAction(
         label: 'Close',
         onPressed: () {},
       ),
-    );snackBarKey.currentState.showSnackBar(snackBar);
+    );
+    snackBarKey.currentState.showSnackBar(snackBar);
   }
 
   Future scanQR() async {
@@ -136,7 +140,8 @@ class _AddChildrenState extends State<AddChildren> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(key: snackBarKey,
+    return Scaffold(
+      key: snackBarKey,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
