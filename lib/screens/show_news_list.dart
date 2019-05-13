@@ -66,14 +66,14 @@ class _ShowNewsListState extends State<ShowNewsList> {
         setState(() {
           print('onResume Call: ==> $msg');
           var notiModel = NotiModel.fromOBJECT(msg);
-          _showDialog(notiModel.title.toString() ,notiModel.body.toString());
+          _showDialog(notiModel.title.toString(), notiModel.body.toString());
         });
       });
     }, onMessage: (Map<String, dynamic> msg) {
       setState(() {
         print('onMessage Call: ==> $msg');
         var notiModel = NotiModel.fromOBJECT(msg);
-        _showDialog(notiModel.title.toString() , notiModel.body.toString());
+        _showDialog(notiModel.title.toString(), notiModel.body.toString());
       });
     });
 
@@ -100,7 +100,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
       payload = "Message is null";
     }
 
-      _showDialog("ข่าวสาร จาก มาลี", "นักเรียน ได้เข้าโรงเรียนแล้ว คะ");
+    _showDialog("ข่าวสาร จาก มาลี", "นักเรียน ได้เข้าโรงเรียนแล้ว คะ");
 
     // var goToShowNoti = MaterialPageRoute(
     //     builder: (BuildContext context) => ShowNotificationMessage(
@@ -117,7 +117,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     // );
   }
 
-  void _showDialog(String title ,String message) {
+  void _showDialog(String title, String message) {
     // flutter defined function
     showDialog(
       context: context,
@@ -232,6 +232,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
             leading: Icon(
               Icons.child_friendly,
               color: Colors.blue,
+              size: 48.0,
             ),
             title: Text(
               'บุตรหลานของ ท่าน',
@@ -239,7 +240,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.blue[800]),
-            ),
+            ),subtitle: Text('ดูบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง', style: TextStyle(color: Colors.blue[600]),),
             onTap: () {
               print('Click Memu1');
               var showChildrenListRoute = MaterialPageRoute(
@@ -255,10 +256,11 @@ class _ShowNewsListState extends State<ShowNewsList> {
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.blue[800]),
-            ),
+            ),subtitle: Text('เพิ่มบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง', style: TextStyle(color: Colors.blue[600]),),
             leading: Icon(
               Icons.group_add,
               color: Colors.blue,
+              size: 48.0,
             ),
             onTap: () {
               var addChildrenRoute = MaterialPageRoute(
