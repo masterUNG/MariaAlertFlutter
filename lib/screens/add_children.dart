@@ -6,6 +6,10 @@ import 'dart:developer';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/children_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
+import '../models/user_model.dart';
 
 class AddChildren extends StatefulWidget {
   @override
@@ -19,6 +23,37 @@ class _AddChildrenState extends State<AddChildren> {
   final snackBarKey = GlobalKey<ScaffoldState>();
   TextEditingController textEditingController = new TextEditingController();
   String nameChildren = 'ชื่อ นามสกุล';
+  bool statusSave = false; // false ==> No or Not Complease barcode
+  List<String> listChildrens = [];
+  String idCodeString;
+  
+
+  @override
+  void initState() {
+    super.initState();
+    getDataFromSharePreFerance(context);
+  }
+
+  void getDataFromSharePreFerance(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    int idInt = sharedPreferences.getInt('id');
+    print('idInt ==> $idInt');
+
+    String urlString = 'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idInt';
+    var response = await get(urlString);
+    var result = json.decode(response.body);
+    print('result ==> $result');
+
+    for (var objJson in result) {
+      UserModel userModel = UserModel.fromJson(objJson);
+      idCodeString = userModel.idCode.toString();
+    print('idCodeString ==> $idCodeString');
+    }
+
+    
+    
+
+  }
 
   Widget showName() {
     return Text(
@@ -61,7 +96,14 @@ class _AddChildrenState extends State<AddChildren> {
         'Save',
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () {
+        if (statusSave) {
+          listChildrens.add(barcode);
+          print('listChildren ==> ${listChildrens.toString()}');
+        } else {
+          showSnackBar('Bar Code ยังไม่สมบูรณ์ คะ');
+        }
+      },
     );
   }
 
@@ -86,8 +128,10 @@ class _AddChildrenState extends State<AddChildren> {
     print('result ==> $result');
 
     if (result.toString() == 'null') {
+      statusSave = false;
       showSnackBar('ไม่มี QR code นี่ใน ฐานข้อมูล');
     } else {
+      statusSave = true;
 
       for (var objJson in result) {
         ChildrenModel childrenModel = ChildrenModel.objJSON(objJson);
@@ -97,8 +141,6 @@ class _AddChildrenState extends State<AddChildren> {
       }
 
       print('nameChildren ==> $nameChildren');
-      
-
     }
   }
 

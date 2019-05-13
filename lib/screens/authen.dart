@@ -47,7 +47,6 @@ class _AuthenState extends State<Authen> {
       if (currentStatus != null) {
         print('Remember ==> $currentStatus');
         if (currentStatus) {
-          print('Remember true');
           moveToNewsListView(context);
         }
       } else {
@@ -155,7 +154,7 @@ class _AuthenState extends State<Authen> {
     print(result);
 
     if (result.toString() == 'null') {
-      print('User False');
+      // print('User False');
       showSnackBar(messageUserFalse);
     } else {
       for (var data in result) {
