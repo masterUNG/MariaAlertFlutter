@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'dart:developer';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
+import '../models/children_model.dart';
 
 class AddChildren extends StatefulWidget {
   @override
@@ -17,10 +18,11 @@ class _AddChildrenState extends State<AddChildren> {
   final formKey = GlobalKey<FormState>();
   final snackBarKey = GlobalKey<ScaffoldState>();
   TextEditingController textEditingController = new TextEditingController();
+  String nameChildren = 'ชื่อ นามสกุล';
 
   Widget showName() {
     return Text(
-      'ชื่อ นามสกุล',
+      nameChildren,
       style: TextStyle(
           fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
     );
@@ -41,6 +43,7 @@ class _AddChildrenState extends State<AddChildren> {
 
         if (barcode.length != 0) {
           textEditingController.text = barcode;
+          loadChildren();
         }
       },
     );
@@ -84,7 +87,19 @@ class _AddChildrenState extends State<AddChildren> {
 
     if (result.toString() == 'null') {
       showSnackBar('ไม่มี QR code นี่ใน ฐานข้อมูล');
-    } else {}
+    } else {
+
+      for (var objJson in result) {
+        ChildrenModel childrenModel = ChildrenModel.objJSON(objJson);
+        setState(() {
+          nameChildren = childrenModel.fname.toString();
+        });
+      }
+
+      print('nameChildren ==> $nameChildren');
+      
+
+    }
   }
 
   void showSnackBar(String message) {
