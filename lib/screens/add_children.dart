@@ -25,7 +25,8 @@ class _AddChildrenState extends State<AddChildren> {
   String nameChildren = 'ชื่อ นามสกุล';
   bool statusSave = false; // false ==> No or Not Complease barcode
   List<String> listChildrens = [];
-  String idCodeString;
+  String idCodeString, idLogin;
+
   
 
   @override
@@ -37,7 +38,8 @@ class _AddChildrenState extends State<AddChildren> {
   void getDataFromSharePreFerance(BuildContext context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     int idInt = sharedPreferences.getInt('id');
-    print('idInt ==> $idInt');
+    // print('idInt ==> $idInt');
+    idLogin = idInt.toString();
 
     String urlString = 'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idInt';
     var response = await get(urlString);
@@ -47,7 +49,21 @@ class _AddChildrenState extends State<AddChildren> {
     for (var objJson in result) {
       UserModel userModel = UserModel.fromJson(objJson);
       idCodeString = userModel.idCode.toString();
-    print('idCodeString ==> $idCodeString');
+    
+
+      if (idCodeString.length != 0) {
+        
+          idCodeString = idCodeString.substring(1,((idCodeString.length)-1));
+          // print('idCodeString ==> $idCodeString');
+          List<String> strings = idCodeString.split(',');
+          // print('strings.length ==> ${strings.length}');
+         
+         for (var value in strings) {
+           listChildrens.add(value);
+         }
+          // print('listChildrens ==> ${listChildrens.toString()}');
+      }
+
     }
 
     
@@ -88,7 +104,7 @@ class _AddChildrenState extends State<AddChildren> {
     return Image.asset('images/child.png');
   }
 
-  Widget saveChildrenButton() {
+  Widget saveChildrenButton(BuildContext context) {
     return RaisedButton(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       color: Colors.blue[300],
@@ -100,11 +116,24 @@ class _AddChildrenState extends State<AddChildren> {
         if (statusSave) {
           listChildrens.add(barcode);
           print('listChildren ==> ${listChildrens.toString()}');
+          uploadToServer(context);
         } else {
           showSnackBar('Bar Code ยังไม่สมบูรณ์ คะ');
         }
       },
     );
+  }
+
+  void uploadToServer(BuildContext context) async{
+    String urlString = 'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${listChildrens.toString()}';
+    var response = await get(urlString);
+    var result = json.decode(response.body);
+    if ((result.toString() != 'null')) {
+      // print('upload OK');
+      Navigator.of(context).pop();
+    } else {
+      showSnackBar('Have Error Please Try Again');
+    }
   }
 
   Widget findChildren() {
@@ -242,7 +271,7 @@ class _AddChildrenState extends State<AddChildren> {
                       child: scanButton(),
                     ),
                     Expanded(
-                      child: saveChildrenButton(),
+                      child: saveChildrenButton(context),
                     )
                   ],
                 ),
