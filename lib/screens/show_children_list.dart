@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/user_model.dart';
+import '../listviews/ children_listview.dart';
+import '../models/children_model.dart';
 
 class ShowChildrenList extends StatefulWidget {
   @override
@@ -14,7 +16,8 @@ class _ShowChildrenListState extends State<ShowChildrenList>
     with WidgetsBindingObserver {
   String titleAppBar = 'บุตรหลานของ ท่าน';
   int idLogin;
-  List<String> idCodeList = [];
+  List<String> idCodeLists = [];
+  List<ChildrenModel> childrenModels = [];
 
   @override
   void initState() {
@@ -39,8 +42,31 @@ class _ShowChildrenListState extends State<ShowChildrenList>
       String idCodeString = userModel.idCode.toString();
       idCodeString = idCodeString.substring(1, ((idCodeString.length) - 1));
 
-      idCodeList = idCodeString.split(',');
-      print('idCodeList ==> $idCodeList');
+      idCodeLists = idCodeString.split(',');
+      print('idCodeList ==> $idCodeLists');
+      getChildrenFromIdCode();
+    }
+  }
+
+  void getChildrenFromIdCode() async {
+    for (var idCode in idCodeLists) {
+      idCode = idCode.trim();
+      print('idCode ==> $idCode');
+      String urlString =
+          'http://tscore.ms.ac.th/App/getStudentWhereQR.php?isAdd=true&idcode=$idCode';
+      var response = await get(urlString);
+      var result = json.decode(response.body);
+      // print('result ==> $result');
+      ChildrenModel childrenModel;
+      for (var objJSON in result) {
+        childrenModel = ChildrenModel.objJSON(objJSON);
+      }
+
+      print('childrenModel ==> ${childrenModel.toString()}');
+      setState(() {
+        childrenModels.add(childrenModel);
+        print('childrenModels.length ==> ${childrenModels.length}');
+      });
     }
   }
 
@@ -80,7 +106,7 @@ class _ShowChildrenListState extends State<ShowChildrenList>
           Navigator.of(context).push(addChildrenRoute);
         },
       ),
-      body: Text('_appLiftcycleState ==> $_notification'),
+      body: ChildrenListView(childrenModels),
     );
   }
 }

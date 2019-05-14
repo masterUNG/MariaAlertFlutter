@@ -101,20 +101,6 @@ class _ShowNewsListState extends State<ShowNewsList> {
     }
 
     _showDialog("ข่าวสาร จาก มาลี", "นักเรียน ได้เข้าโรงเรียนแล้ว คะ");
-
-    // var goToShowNoti = MaterialPageRoute(
-    //     builder: (BuildContext context) => ShowNotificationMessage(
-    //           messageString: payload,
-    //         ));
-    // await Navigator.push(context, goToShowNoti);
-
-    // showDialog(
-    //   context: context,
-    //   builder: (_) => new AlertDialog(
-    //         title: new Text(titleNotification),
-    //         content: new Text('$payload'),
-    //       ),
-    // );
   }
 
   void _showDialog(String title, String message) {
@@ -240,7 +226,11 @@ class _ShowNewsListState extends State<ShowNewsList> {
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.blue[800]),
-            ),subtitle: Text('ดูบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง', style: TextStyle(color: Colors.blue[600]),),
+            ),
+            subtitle: Text(
+              'ดูบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
+              style: TextStyle(color: Colors.blue[600]),
+            ),
             onTap: () {
               print('Click Memu1');
               var showChildrenListRoute = MaterialPageRoute(
@@ -256,7 +246,11 @@ class _ShowNewsListState extends State<ShowNewsList> {
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.blue[800]),
-            ),subtitle: Text('เพิ่มบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง', style: TextStyle(color: Colors.blue[600]),),
+            ),
+            subtitle: Text(
+              'เพิ่มบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
+              style: TextStyle(color: Colors.blue[600]),
+            ),
             leading: Icon(
               Icons.group_add,
               color: Colors.blue,
