@@ -25,9 +25,7 @@ class _AddChildrenState extends State<AddChildren> {
   String nameChildren = 'ชื่อ นามสกุล';
   bool statusSave = false; // false ==> No or Not Complease barcode
   List<String> listChildrens = [];
-  String idCodeString, idLogin;
-
-  
+  String idCodeString, idLogin, urlImage = '';
 
   @override
   void initState() {
@@ -41,7 +39,8 @@ class _AddChildrenState extends State<AddChildren> {
     // print('idInt ==> $idInt');
     idLogin = idInt.toString();
 
-    String urlString = 'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idInt';
+    String urlString =
+        'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idInt';
     var response = await get(urlString);
     var result = json.decode(response.body);
     print('result ==> $result');
@@ -49,26 +48,19 @@ class _AddChildrenState extends State<AddChildren> {
     for (var objJson in result) {
       UserModel userModel = UserModel.fromJson(objJson);
       idCodeString = userModel.idCode.toString();
-    
 
       if (idCodeString.length != 0) {
-        
-          idCodeString = idCodeString.substring(1,((idCodeString.length)-1));
-          // print('idCodeString ==> $idCodeString');
-          List<String> strings = idCodeString.split(',');
-          // print('strings.length ==> ${strings.length}');
-         
-         for (var value in strings) {
-           listChildrens.add(value);
-         }
-          // print('listChildrens ==> ${listChildrens.toString()}');
+        idCodeString = idCodeString.substring(1, ((idCodeString.length) - 1));
+        // print('idCodeString ==> $idCodeString');
+        List<String> strings = idCodeString.split(',');
+        // print('strings.length ==> ${strings.length}');
+
+        for (var value in strings) {
+          listChildrens.add(value);
+        }
+        // print('listChildrens ==> ${listChildrens.toString()}');
       }
-
     }
-
-    
-    
-
   }
 
   Widget showName() {
@@ -101,7 +93,11 @@ class _AddChildrenState extends State<AddChildren> {
   }
 
   Widget showAvata() {
-    return Image.asset('images/child.png');
+    if (urlImage.length != 0) {
+      return Image.network(urlImage);
+    } else {
+      return Image.asset('images/child.png');
+    }
   }
 
   Widget saveChildrenButton(BuildContext context) {
@@ -124,8 +120,9 @@ class _AddChildrenState extends State<AddChildren> {
     );
   }
 
-  void uploadToServer(BuildContext context) async{
-    String urlString = 'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${listChildrens.toString()}';
+  void uploadToServer(BuildContext context) async {
+    String urlString =
+        'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${listChildrens.toString()}';
     var response = await get(urlString);
     var result = json.decode(response.body);
     if ((result.toString() != 'null')) {
@@ -154,7 +151,7 @@ class _AddChildrenState extends State<AddChildren> {
         'http://tscore.ms.ac.th/App/getStudentWhereQR.php?isAdd=true&idcode=$barcode';
     var response = await get(url);
     var result = json.decode(response.body);
-    print('result ==> $result');
+    print('result loadChildren ==> $result');
 
     if (result.toString() == 'null') {
       statusSave = false;
@@ -166,6 +163,7 @@ class _AddChildrenState extends State<AddChildren> {
         ChildrenModel childrenModel = ChildrenModel.objJSON(objJson);
         setState(() {
           nameChildren = childrenModel.fname.toString();
+          urlImage = childrenModel.imagePath.toString().trim();
         });
       }
 
