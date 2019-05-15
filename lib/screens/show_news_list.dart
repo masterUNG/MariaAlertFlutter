@@ -12,6 +12,7 @@ import '../models/noti_model.dart';
 import './show_notification.dart';
 import './show_children_list.dart';
 import './add_children.dart';
+import './authen.dart';
 
 class ShowNewsList extends StatefulWidget {
   @override
@@ -264,7 +265,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
             },
           ),
           ListTile(
-            leading: Icon(Icons.android, size: 48.0, color: Colors.blue),
+            leading: Icon(Icons.sync, size: 48.0, color: Colors.blue),
             title: Text(
               'Log Out',
               style: TextStyle(
@@ -275,9 +276,30 @@ class _ShowNewsListState extends State<ShowNewsList> {
             subtitle: Text(
               'การออกจาก User นี่ เพื่อ Login ใหม่',
               style: TextStyle(color: Colors.blue[600]),
-            ),onTap: (){
-              clearSharePreferance();
-              var backHomeRoute = MaterialPageRoute();
+            ),
+            onTap: () {
+              clearSharePreferance(context);
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.close,
+              size: 48.0,
+              color: Colors.blue,
+            ),
+            title: Text(
+              'ออกจาก Application',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue[800]),
+            ),
+            subtitle: Text(
+              'ออกจาก App แต่ยังจดจำ User',
+              style: TextStyle(color: Colors.blue[600]),
+            ),
+            onTap: () {
+              exit(0);
             },
           )
         ],
@@ -285,13 +307,16 @@ class _ShowNewsListState extends State<ShowNewsList> {
     );
   }
 
-  void clearSharePreferance() async {
+  void clearSharePreferance(BuildContext context) async {
     sharePreferances = await SharedPreferences.getInstance();
     setState(() {
       sharePreferances.clear();
       print('Remember ===>> ${sharePreferances.getBool('Remember')}');
       if (sharePreferances.getBool('Remember') == null) {
-        exit(0);
+        var backHomeRoute =
+            MaterialPageRoute(builder: (BuildContext context) => Authen());
+        Navigator.of(context)
+            .pushAndRemoveUntil(backHomeRoute, (Route<dynamic> route) => false);
       }
     });
   }
