@@ -121,6 +121,15 @@ class _AddChildrenState extends State<AddChildren> {
   }
 
   void uploadToServer(BuildContext context) async {
+
+    
+    String urlParents = 'http://tscore.ms.ac.th/App/editParentWhereIdCode.php?isAdd=true&idCode=$idCodeString&parents=[$idLogin]';
+    print('urlParents ==> $urlParents');
+    var parentsResponse = await get(urlParents);
+    var resultParents = json.decode(parentsResponse.body);
+    print('resultParents ==> $resultParents');
+
+
     String urlString =
         'http://tscore.ms.ac.th/App/editUserMariaWhereId.php?isAdd=true&id=$idLogin&idCode=${listChildrens.toString()}';
     var response = await get(urlString);
@@ -218,6 +227,7 @@ class _AddChildrenState extends State<AddChildren> {
       },
       onSaved: (String value) {
         barcode = value;
+        idCodeString = value;
       },
     );
   }
