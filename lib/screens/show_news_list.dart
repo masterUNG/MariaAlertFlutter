@@ -149,7 +149,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
   void getAllDataFromJson() async {
     var response = await http.get(urlJson);
     var result = json.decode(response.body);
-    print(result);
+    // print(result);
     setState(() {
       for (var objJson in result) {
         newModels.add(NewsModel.fromJSON(objJson));
@@ -179,7 +179,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
       tooltip: titleTooltip,
       icon: Icon(Icons.close),
       onPressed: () {
-        clearSharePreferance();
+        exit(0);
       },
     );
   }
@@ -261,6 +261,23 @@ class _ShowNewsListState extends State<ShowNewsList> {
                   builder: (BuildContext context) => AddChildren());
               Navigator.of(context).pop();
               Navigator.of(context).push(addChildrenRoute);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.android, size: 48.0, color: Colors.blue),
+            title: Text(
+              'Log Out',
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue[800]),
+            ),
+            subtitle: Text(
+              'การออกจาก User นี่ เพื่อ Login ใหม่',
+              style: TextStyle(color: Colors.blue[600]),
+            ),onTap: (){
+              clearSharePreferance();
+              var backHomeRoute = MaterialPageRoute();
             },
           )
         ],
