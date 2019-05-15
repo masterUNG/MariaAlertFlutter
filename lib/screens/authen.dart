@@ -49,57 +49,64 @@ class _AuthenState extends State<Authen> {
         if (currentStatus) {
           moveToNewsListView(context);
         }
-      } else {
-        print('Remember ==> Null');
       }
     });
   }
 
   Widget showLogo() {
-    return Image.asset('images/logo1.png');
+    return Container(
+      width: 120.0,
+      height: 120.0,
+      child: Image.asset('images/logo1.png'),
+    );
   }
 
   Widget userTextFromField() {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 1.0),
-              borderRadius: BorderRadius.circular(15.0)),
-          hintStyle: TextStyle(color: Colors.white),
-          labelText: titleUser,
-          hintText: 'Your User',
-          labelStyle: TextStyle(color: Colors.white)),
-      validator: (String value) {
-        if (value.length == 0) {
-          return messageHaveSpaceUser;
-        }
-      },
-      onSaved: (String value) {
-        user = value;
-      },
+    return Container(
+      margin: EdgeInsets.only(top: 24.0),
+      child: TextFormField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                borderRadius: BorderRadius.circular(20.0)),
+            hintStyle: TextStyle(color: Colors.white),
+            labelText: titleUser,
+            hintText: 'Your User',
+            labelStyle: TextStyle(color: Colors.white)),
+        validator: (String value) {
+          if (value.length == 0) {
+            return messageHaveSpaceUser;
+          }
+        },
+        onSaved: (String value) {
+          user = value;
+        },
+      ),
     );
   }
 
   Widget passwordTextFromField() {
-    return TextFormField(
-      decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 1.0),
-              borderRadius: BorderRadius.circular(15.0)),
-          hintStyle: TextStyle(color: Colors.white),
-          labelText: titlePassword,
-          hintText: 'Your Password',
-          labelStyle:
-              TextStyle(color: Colors.white)),
-      validator: (String value) {
-        if (value.length == 0) {
-          return messageHaveSpacePassword;
-        }
-      },
-      onSaved: (String value) {
-        password = value;
-      },
+    return Container(
+      margin: EdgeInsets.only(top: 8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                borderRadius: BorderRadius.circular(20.0)),
+            hintStyle: TextStyle(color: Colors.white),
+            labelText: titlePassword,
+            hintText: 'Your Password',
+            labelStyle: TextStyle(color: Colors.white)),
+        validator: (String value) {
+          if (value.length == 0) {
+            return messageHaveSpacePassword;
+          }
+        },
+        onSaved: (String value) {
+          password = value;
+        },
+      ),
     );
   }
 
@@ -134,7 +141,7 @@ class _AuthenState extends State<Authen> {
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       onPressed: () {
-        print('You Click Login');
+        // print('You Click Login');
         print(formKey.currentState.validate());
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
@@ -250,17 +257,9 @@ class _AuthenState extends State<Authen> {
             child: Container(
               child: Column(
                 children: <Widget>[
-                  Container(
-                    constraints: BoxConstraints.expand(width: 150, height: 150),
-                    child: showLogo(),
-                  ),
-                  Container(margin: EdgeInsets.only(top: 10.0),
-                    child: userTextFromField(),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0),
-                    child: passwordTextFromField(),
-                  ),
+                  showLogo(),
+                  userTextFromField(),
+                  passwordTextFromField(),
                   rememberCheckBox(),
                   Row(
                     children: <Widget>[
