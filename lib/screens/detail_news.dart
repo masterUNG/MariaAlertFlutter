@@ -4,6 +4,7 @@ import 'dart:convert';
 import '../models/news_model.dart';
 import '../listviews/detail_listview.dart';
 import 'dart:async';
+import './show_detail_news.dart';
 
 class DetailNews extends StatefulWidget {
   // id Receive From Tap ListView
@@ -16,6 +17,7 @@ class DetailNews extends StatefulWidget {
 
 class _DetailNewsState extends State<DetailNews> {
   NewsModel newsModel;
+  List<NewsModel> newsModels = [];
 
   @override
   void initState() {
@@ -29,13 +31,18 @@ class _DetailNewsState extends State<DetailNews> {
     String urlString =
         "http://tscore.ms.ac.th/App/getNewsWhereId.php?isAdd=true&id=$idInt";
     var response = await get(urlString);
-    var result = json.decode(response.body);
-    print('id ==> $idInt, result ==> $result');
-    setState(() {
+    if (response.statusCode == 200) {
+      var result = json.decode(response.body);
+      print('id ==> $idInt, result ==> $result');
       for (var objJson in result) {
-      newsModel = NewsModel.fromJSON(objJson);
+        setState(() {
+          newsModels.add(NewsModel.fromJSON(objJson));
+          newsModel = NewsModel.fromJSON(objJson);
+        });
+      }
+    } else {
+      throw Exception('Error Master UNG');
     }
-    });
   }
 
   @override

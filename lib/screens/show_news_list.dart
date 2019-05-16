@@ -36,8 +36,6 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
   //  Abour Firebase
   FirebaseMessaging firebaseMessageing = new FirebaseMessaging();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
 
   SharedPreferences sharePreferances;
 
@@ -48,13 +46,6 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
     // Load Config Setting from SharePreferance
     getCredectial();
-
-    // About Firebase Messageing
-    var android = new AndroidInitializationSettings('app_icon');
-    var iOS = new IOSInitializationSettings();
-    var platform = new InitializationSettings(android, iOS);
-    flutterLocalNotificationsPlugin.initialize(platform,
-        onSelectNotification: onSelectNotification);
 
     firebaseMessageing.configure(onLaunch: (Map<String, dynamic> msg) {
       print('onLaunch Call: ==> $msg');
@@ -94,16 +85,6 @@ class _ShowNewsListState extends State<ShowNewsList> {
     });
   } // initial
 
-  Future onSelectNotification(String payload) async {
-    debugPrint("payload : $payload");
-
-    if (payload == null) {
-      payload = "Message is null";
-    }
-
-    _showDialog("ข่าวสาร จาก มาลี", "นักเรียน ได้เข้าโรงเรียนแล้ว คะ");
-  }
-
   void _showDialog(String title, String message) {
     // flutter defined function
     showDialog(
@@ -125,26 +106,6 @@ class _ShowNewsListState extends State<ShowNewsList> {
         );
       },
     );
-  }
-
-  void showNotification(Map<String, dynamic> msg) async {
-    print('showNoti Work msg ==> $msg');
-
-    var objNotification = msg['notification'];
-    print('objNoti ==> $objNotification');
-
-    var notiModel = NotiModel.fromJSON(objNotification);
-    String title = notiModel.title.toString();
-    String body = notiModel.body.toString();
-
-    var android = new AndroidNotificationDetails(
-        'channel id', 'channel NAME', 'CHANNEL DESCRIPTION',
-        priority: Priority.High, importance: Importance.Max);
-
-    var iOS = new IOSNotificationDetails();
-    var platform = new NotificationDetails(android, iOS);
-    await flutterLocalNotificationsPlugin.show(0, title, body, platform,
-        payload: body);
   }
 
   void getAllDataFromJson() async {
