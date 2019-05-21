@@ -6,16 +6,12 @@ class DetailListView extends StatelessWidget {
 
   DetailListView(this.newsModel);
 
-  
-
   Widget showPicture() {
     return Image.network(
       newsModel.picture.toString(),
       fit: BoxFit.fitHeight,
     );
   }
-
-  
 
   Widget showTitle() {
     return Text(
@@ -25,14 +21,10 @@ class DetailListView extends StatelessWidget {
     );
   }
 
- 
-
   Widget showDetail() {
     return Container(
         margin: EdgeInsets.all(15.0), child: Text(newsModel.detail.toString()));
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

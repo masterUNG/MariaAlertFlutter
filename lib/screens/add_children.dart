@@ -25,7 +25,7 @@ class _AddChildrenState extends State<AddChildren> {
   String nameChildren = 'ชื่อ นามสกุล';
   bool statusSave = false; // false ==> No or Not Complease barcode
   List<String> listChildrens = [];
-  String idCodeString, idLogin, urlImage = '';
+  String idCodeString, idLogin, urlImage = '', tokenString = '';
 
   @override
   void initState() {
@@ -43,11 +43,13 @@ class _AddChildrenState extends State<AddChildren> {
         'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idInt';
     var response = await get(urlString);
     var result = json.decode(response.body);
-    print('result ==> $result');
+    // print('result ==> $result');
 
     for (var objJson in result) {
       UserModel userModel = UserModel.fromJson(objJson);
       idCodeString = userModel.idCode.toString();
+      tokenString = userModel.Token.toString();
+      print('idcodeString ==> $idCodeString , Token ==> $tokenString');
 
       if (idCodeString.length != 0) {
         idCodeString = idCodeString.substring(1, ((idCodeString.length) - 1));
@@ -121,9 +123,8 @@ class _AddChildrenState extends State<AddChildren> {
   }
 
   void uploadToServer(BuildContext context) async {
-
-    
-    String urlParents = 'http://tscore.ms.ac.th/App/editParentWhereIdCode.php?isAdd=true&idCode=$idCodeString&parents=[$idLogin]';
+     
+    String urlParents = 'http://tscore.ms.ac.th/App/editParentWhereIdCode.php?isAdd=true&idCode=$barcode&parents=$tokenString';
     print('urlParents ==> $urlParents');
     var parentsResponse = await get(urlParents);
     var resultParents = json.decode(parentsResponse.body);
