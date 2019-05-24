@@ -7,8 +7,6 @@ import 'package:http/http.dart' show get;
 import 'dart:convert';
 import '../models/children_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' show get;
-import 'dart:convert';
 import '../models/user_model.dart';
 
 class AddChildren extends StatefulWidget {
@@ -86,10 +84,10 @@ class _AddChildrenState extends State<AddChildren> {
         debugPrint('QRcode ==> $barcode');
         log('qrCode: $barcode');
 
-        if (barcode.length != 0) {
-          textEditingController.text = barcode;
-          loadChildren();
-        }
+        // if (barcode.length != 0) {
+        //   textEditingController.text = barcode;
+        //   loadChildren();
+        // }
       },
     );
   }
@@ -201,6 +199,12 @@ class _AddChildrenState extends State<AddChildren> {
     try {
       String barcode = await BarcodeScanner.scan();
       setState(() => this.barcode = barcode);
+
+      if (barcode.length != 0) {
+          textEditingController.text = barcode;
+          loadChildren();
+        }
+
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         // The user did not grant the camera permission.
