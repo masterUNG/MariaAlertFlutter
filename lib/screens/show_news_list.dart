@@ -125,15 +125,18 @@ class _ShowNewsListState extends State<ShowNewsList> {
       rememberBool = sharePreferances.getBool('Remember');
       idLoginInt = sharePreferances.getInt('id');
       typeString = sharePreferances.getString('Type');
-      // print(
-      //     'Receive from SharePreferance rememberBool => $rememberBool, idLogin => $idLoginInt, typeString => $typeString');
+     print('idLoginInt ==> $idLoginInt, currentToken ==> $myToken');
     });
   }
 
-  void updateToken(String token) {
-    print(token);
-    textValue = token;
-    setState(() {});
+  void updateToken(String token) async{
+    String currentToken = token;
+    String urlPHP = 'http://tscore.ms.ac.th/App/editTokenMariaWhereId.php?isAdd=true&id=$idLoginInt&Token=$currentToken';
+    var response = await http.get(urlPHP);
+    var result = json.decode(response.body);
+    print('result edit Token ==> ' + result.toString());
+    
+    
   }
 
   Widget exitApp() {
