@@ -71,7 +71,7 @@ class NewsListView extends StatelessWidget {
 
             var goToDetailNews = new MaterialPageRoute(
                 builder: (BuildContext context) => DetailNews(
-                      idNewsInt: idNewsInt,
+                      newsModel: newsModels[index],
                     ));
             Navigator.of(context).push(goToDetailNews);
           },

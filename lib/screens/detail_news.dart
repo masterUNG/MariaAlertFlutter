@@ -7,42 +7,20 @@ import 'dart:async';
 import './show_detail_news.dart';
 
 class DetailNews extends StatefulWidget {
-  // id Receive From Tap ListView
-  final int idNewsInt;
-  DetailNews({Key key, this.idNewsInt}) : super(key: key);
+  final NewsModel newsModel;
+  DetailNews({Key key, this.newsModel}) : super(key: key);
 
   @override
   _DetailNewsState createState() => _DetailNewsState();
 }
 
 class _DetailNewsState extends State<DetailNews> {
-  NewsModel newsModel;
-  List<NewsModel> newsModels = [];
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    int id = widget.idNewsInt;
-    getNewsFromJSON(id);
-  }
-
-  getNewsFromJSON(int idInt) async {
-    String urlString =
-        "http://tscore.ms.ac.th/App/getNewsWhereId.php?isAdd=true&id=$idInt";
-    var response = await get(urlString);
-    if (response.statusCode == 200) {
-      var result = json.decode(response.body);
-      print('id ==> $idInt, result ==> $result');
-      for (var objJson in result) {
-        setState(() {
-          newsModels.add(NewsModel.fromJSON(objJson));
-          newsModel = NewsModel.fromJSON(objJson);
-        });
-      }
-    } else {
-      throw Exception('Error Master UNG');
-    }
+    // int id = widget.idNewsInt;
+    // getNewsFromJSON(id);
   }
 
   @override
@@ -51,7 +29,7 @@ class _DetailNewsState extends State<DetailNews> {
       appBar: AppBar(
         title: Text('Detail News'),
       ),
-      body: DetailListView(newsModel),
+      body: DetailListView(widget.newsModel),
     );
   }
 }
