@@ -244,37 +244,38 @@ class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: scaffoldKey,
-        resizeToAvoidBottomPadding: false,
-        body: Form(
-          key: formKey,
+      key: scaffoldKey,
+      resizeToAvoidBottomPadding: false,
+      body: Center(child: Form(
+        key: formKey,
+        child: Container(
+          padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.lightBlue[50], Colors.blue[700]],
+                  begin: Alignment(-1, -1))),
           child: Container(
-            padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.lightBlue[50], Colors.blue[700]],
-                    begin: Alignment(-1, -1))),
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  showLogo(),
-                  userTextFromField(),
-                  passwordTextFromField(),
-                  rememberCheckBox(),
-                  Row(
-                    children: <Widget>[
-                      new Expanded(
-                        child: Container(
-                          child: loginButton(context),
-                        ),
-                      )
-                    ],
-                  ),
-                  myRegisger(context)
-                ],
-              ),
+            child: Column(
+              children: <Widget>[
+                showLogo(),
+                userTextFromField(),
+                passwordTextFromField(),
+                rememberCheckBox(),
+                Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: Container(
+                        child: loginButton(context),
+                      ),
+                    )
+                  ],
+                ),
+                myRegisger(context)
+              ],
             ),
           ),
-        ));
+        ),
+      ),)
+    );
   }
 }
