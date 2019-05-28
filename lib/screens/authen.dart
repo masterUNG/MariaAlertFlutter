@@ -246,7 +246,7 @@ class _AuthenState extends State<Authen> {
     return Scaffold(
       key: scaffoldKey,
       resizeToAvoidBottomPadding: false,
-      body: Center(child: Form(
+      body: Form(
         key: formKey,
         child: Container(
           padding: EdgeInsets.only(top: 50.0, left: 50.0, right: 50.0),
@@ -275,7 +275,7 @@ class _AuthenState extends State<Authen> {
             ),
           ),
         ),
-      ),)
+      ),
     );
   }
 }
