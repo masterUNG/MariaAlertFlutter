@@ -5,10 +5,11 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/news_model.dart';
+import '../models/noti_model.dart';
+import '../models/user_model.dart';
 import '../listviews/news_listview.dart';
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../models/noti_model.dart';
 import './show_notification.dart';
 import './show_children_list.dart';
 import './add_children.dart';
@@ -125,18 +126,43 @@ class _ShowNewsListState extends State<ShowNewsList> {
       rememberBool = sharePreferances.getBool('Remember');
       idLoginInt = sharePreferances.getInt('id');
       typeString = sharePreferances.getString('Type');
-     print('idLoginInt ==> $idLoginInt, currentToken ==> $myToken');
+      print('idLoginInt ==> $idLoginInt, currentToken ==> $myToken');
     });
   }
 
-  void updateToken(String token) async{
+  void updateToken(String token) async {
     String currentToken = token;
-    String urlPHP = 'http://tscore.ms.ac.th/App/editTokenMariaWhereId.php?isAdd=true&id=$idLoginInt&Token=$currentToken';
+    String urlPHP =
+        'http://tscore.ms.ac.th/App/editTokenMariaWhereId.php?isAdd=true&id=$idLoginInt&Token=$currentToken';
     var response = await http.get(urlPHP);
     var result = json.decode(response.body);
     print('result edit Token ==> ' + result.toString());
-    
-    
+
+    // Read idCode
+    String urlPHP2 =
+        'http://tscore.ms.ac.th/App/getUserWhereId.php?isAdd=true&id=$idLoginInt';
+    var response2 = await http.get(urlPHP2);
+    var result2 = json.decode(response2.body);
+    // print(result2);
+
+    for (var jsonValue in result2) {
+      UserModel userModel = UserModel.fromJson(jsonValue);
+      String idCodeUser = userModel.idCode.toString();
+
+      idCodeUser = idCodeUser.substring(1, (idCodeUser.length - 1));
+      // print(idCodeUser);
+      List<String> idCodeList = idCodeUser.split(',');
+      // print(idCodeList);
+
+      for (var idCodeString in idCodeList) {
+        print(idCodeString);
+        String urlPHP3 = 'http://tscore.ms.ac.th/App/editParentsStudentWhereIdCode.php?isAdd=true&idCode=${idCodeString.trim()}&parents=$currentToken';
+        var response3 = await http.get(urlPHP3);
+        var result3 = json.decode(response3.body);
+        print('Edit Token on Student $idCodeString ==> $result3');
+      }
+
+    }
   }
 
   Widget exitApp() {

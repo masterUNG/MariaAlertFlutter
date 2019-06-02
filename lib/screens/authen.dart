@@ -90,6 +90,7 @@ class _AuthenState extends State<Authen> {
     return Container(
       margin: EdgeInsets.only(top: 8.0),
       child: TextFormField(
+        obscureText: true,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white, width: 1.0),
