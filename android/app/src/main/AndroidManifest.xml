@@ -6,7 +6,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Marie Alert"
+        android:label="Marie Care"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
