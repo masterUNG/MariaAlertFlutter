@@ -1,8 +1,16 @@
 class ChildrenModel {
-  String studentId, fname, studentClass, room, roomnt, score, imagePath, parents;
+  String studentId,
+      fname,
+      studentClass,
+      room,
+      roomnt,
+      score,
+      imagePath,
+      parents,
+      idcode;
 
   ChildrenModel(this.studentId, this.fname, this.studentClass, this.room,
-      this.roomnt, this.score, this.imagePath, this.parents);
+      this.roomnt, this.score, this.imagePath, this.parents, this.idcode);
 
   ChildrenModel.objJSON(Map<String, dynamic> parseJSON) {
     studentClass = parseJSON['id'];
@@ -13,6 +21,7 @@ class ChildrenModel {
     score = parseJSON['score'];
     imagePath = parseJSON['imagePath'];
     parents = parseJSON['parents'];
+    idcode = parseJSON['idcode'];
   }
 
   @override
@@ -20,5 +29,4 @@ class ChildrenModel {
     // TODO: implement toString
     return 'fname => $fname, imagePath => $imagePath';
   }
-
 }

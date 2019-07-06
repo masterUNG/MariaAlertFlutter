@@ -21,11 +21,12 @@ class ShowNewsList extends StatefulWidget {
 }
 
 class _ShowNewsListState extends State<ShowNewsList> {
+  // Explicit
   String titleAppbar = 'ข่าวสาร น่ารู้';
   String titleTooltip = 'ออกจากผู้ใช้';
   String titleNotification = 'ข้อความจาก มาลี';
-
   String urlJson = 'http://tscore.ms.ac.th/App/getAllNews.php';
+
   List<NewsModel> newModels = [];
   List<NotiModel> notiModels = [];
 
@@ -109,7 +110,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     );
   }
 
-  void getAllDataFromJson() async {
+  Future<void> getAllDataFromJson() async {
     var response = await http.get(urlJson);
     var result = json.decode(response.body);
     // print(result);
@@ -120,7 +121,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     });
   }
 
-  void getCredectial() async {
+  Future<void> getCredectial() async {
     sharePreferances = await SharedPreferences.getInstance();
     setState(() {
       rememberBool = sharePreferances.getBool('Remember');
@@ -130,7 +131,7 @@ class _ShowNewsListState extends State<ShowNewsList> {
     });
   }
 
-  void updateToken(String token) async {
+  Future<void> updateToken(String token) async {
     String currentToken = token;
     String urlPHP =
         'http://tscore.ms.ac.th/App/editTokenMariaWhereId.php?isAdd=true&id=$idLoginInt&Token=$currentToken';
@@ -156,12 +157,12 @@ class _ShowNewsListState extends State<ShowNewsList> {
 
       for (var idCodeString in idCodeList) {
         print(idCodeString);
-        String urlPHP3 = 'http://tscore.ms.ac.th/App/editParentsStudentWhereIdCode.php?isAdd=true&idCode=${idCodeString.trim()}&parents=$currentToken';
+        String urlPHP3 =
+            'http://tscore.ms.ac.th/App/editParentsStudentWhereIdCode.php?isAdd=true&idCode=${idCodeString.trim()}&parents=$currentToken';
         var response3 = await http.get(urlPHP3);
         var result3 = json.decode(response3.body);
         print('Edit Token on Student $idCodeString ==> $result3');
       }
-
     }
   }
 
@@ -170,6 +171,105 @@ class _ShowNewsListState extends State<ShowNewsList> {
       tooltip: titleTooltip,
       icon: Icon(Icons.close),
       onPressed: () {
+        exit(0);
+      },
+    );
+  }
+
+  Widget menuShowChildren() {
+    return ListTile(
+      leading: Icon(
+        Icons.child_friendly,
+        color: Colors.blue,
+        size: 48.0,
+      ),
+      title: Text(
+        'บุตรหลานของ ท่าน',
+        style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue[800]),
+      ),
+      subtitle: Text(
+        'ดูบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
+        style: TextStyle(color: Colors.blue[600]),
+      ),
+      onTap: () {
+        print('Click Memu1');
+        var showChildrenListRoute = MaterialPageRoute(
+            builder: (BuildContext context) => ShowChildrenList());
+        Navigator.of(context).pop();
+        Navigator.of(context).push(showChildrenListRoute);
+      },
+    );
+  }
+
+  Widget menuAddChildren() {
+    return ListTile(
+      title: Text(
+        'เพิ่ม บุตร หลาน ของท่าน',
+        style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue[800]),
+      ),
+      subtitle: Text(
+        'เพิ่มบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
+        style: TextStyle(color: Colors.blue[600]),
+      ),
+      leading: Icon(
+        Icons.group_add,
+        color: Colors.blue,
+        size: 48.0,
+      ),
+      onTap: () {
+        var addChildrenRoute =
+            MaterialPageRoute(builder: (BuildContext context) => AddChildren());
+        Navigator.of(context).pop();
+        Navigator.of(context).push(addChildrenRoute);
+      },
+    );
+  }
+
+  Widget menuLogOut() {
+    return ListTile(
+      leading: Icon(Icons.sync, size: 48.0, color: Colors.blue),
+      title: Text(
+        'Log Out',
+        style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue[800]),
+      ),
+      subtitle: Text(
+        'การออกจาก User นี่ เพื่อ Login ใหม่',
+        style: TextStyle(color: Colors.blue[600]),
+      ),
+      onTap: () {
+        clearSharePreferance(context);
+      },
+    );
+  }
+
+  Widget menuExitApp() {
+    return ListTile(
+      leading: Icon(
+        Icons.close,
+        size: 48.0,
+        color: Colors.blue,
+      ),
+      title: Text(
+        'ออกจาก Application',
+        style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue[800]),
+      ),
+      subtitle: Text(
+        'ออกจาก App แต่ยังจดจำ User',
+        style: TextStyle(color: Colors.blue[600]),
+      ),
+      onTap: () {
         exit(0);
       },
     );
@@ -205,93 +305,10 @@ class _ShowNewsListState extends State<ShowNewsList> {
               ),
             ),
           ),
-          ListTile(
-            leading: Icon(
-              Icons.child_friendly,
-              color: Colors.blue,
-              size: 48.0,
-            ),
-            title: Text(
-              'บุตรหลานของ ท่าน',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800]),
-            ),
-            subtitle: Text(
-              'ดูบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
-              style: TextStyle(color: Colors.blue[600]),
-            ),
-            onTap: () {
-              print('Click Memu1');
-              var showChildrenListRoute = MaterialPageRoute(
-                  builder: (BuildContext context) => ShowChildrenList());
-              Navigator.of(context).pop();
-              Navigator.of(context).push(showChildrenListRoute);
-            },
-          ),
-          ListTile(
-            title: Text(
-              'เพิ่ม บุตร หลาน ของท่าน',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800]),
-            ),
-            subtitle: Text(
-              'เพิ่มบุตรหลาน ที่อยู่ในการดูแลของท่านผู้ปกครอง',
-              style: TextStyle(color: Colors.blue[600]),
-            ),
-            leading: Icon(
-              Icons.group_add,
-              color: Colors.blue,
-              size: 48.0,
-            ),
-            onTap: () {
-              var addChildrenRoute = MaterialPageRoute(
-                  builder: (BuildContext context) => AddChildren());
-              Navigator.of(context).pop();
-              Navigator.of(context).push(addChildrenRoute);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.sync, size: 48.0, color: Colors.blue),
-            title: Text(
-              'Log Out',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800]),
-            ),
-            subtitle: Text(
-              'การออกจาก User นี่ เพื่อ Login ใหม่',
-              style: TextStyle(color: Colors.blue[600]),
-            ),
-            onTap: () {
-              clearSharePreferance(context);
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.close,
-              size: 48.0,
-              color: Colors.blue,
-            ),
-            title: Text(
-              'ออกจาก Application',
-              style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue[800]),
-            ),
-            subtitle: Text(
-              'ออกจาก App แต่ยังจดจำ User',
-              style: TextStyle(color: Colors.blue[600]),
-            ),
-            onTap: () {
-              exit(0);
-            },
-          )
+          menuShowChildren(),
+          menuAddChildren(),
+          menuLogOut(),
+          menuExitApp(),
         ],
       ),
     );

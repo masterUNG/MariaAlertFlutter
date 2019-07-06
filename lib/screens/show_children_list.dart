@@ -28,7 +28,7 @@ class _ShowChildrenListState extends State<ShowChildrenList>
     getSharePreferance();
   }
 
-  void getSharePreferance() async {
+  Future<void> getSharePreferance() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     idLogin = sharedPreferences.getInt('id');
 
@@ -48,7 +48,7 @@ class _ShowChildrenListState extends State<ShowChildrenList>
     }
   }
 
-  void getChildrenFromIdCode() async {
+  Future<void> getChildrenFromIdCode() async {
     for (var idCode in idCodeLists) {
       idCode = idCode.trim();
       print('idCode ==> $idCode');
@@ -62,10 +62,10 @@ class _ShowChildrenListState extends State<ShowChildrenList>
         childrenModel = ChildrenModel.objJSON(objJSON);
       }
 
-      print('childrenModel ==> ${childrenModel.toString()}');
+      // print('childrenModel ==> ${childrenModel.toString()}');
       setState(() {
         childrenModels.add(childrenModel);
-        print('childrenModels.length ==> ${childrenModels.length}');
+        // print('childrenModels.length ==> ${childrenModels.length}');
       });
     }
   }

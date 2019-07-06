@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mariealert/screens/show_score_list.dart';
 import '../models/children_model.dart';
 
 class ChildrenListView extends StatelessWidget {
@@ -66,14 +67,26 @@ class ChildrenListView extends StatelessWidget {
     return ListView.builder(
       itemCount: childrenModels.length,
       itemBuilder: (context, int index) {
-        return Container(
-          child: Column(
-            children: <Widget>[
-              showImage(index),
-              showName(index),
-              showRoom(index)
-            ],
+        return GestureDetector(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                showImage(index),
+                showName(index),
+                showRoom(index)
+              ],
+            ),
           ),
+          onTap: () {
+            String idCode = childrenModels[index].idcode;
+            print('Click idCode ==> $idCode');
+
+            var showScoreRoute = MaterialPageRoute(
+                builder: (BuildContext context) => ShowScoreList(
+                      idCode: idCode,
+                    ));
+            Navigator.of(context).push(showScoreRoute);
+          },
         );
       },
     );
@@ -83,8 +96,10 @@ class ChildrenListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          gradient: RadialGradient(radius: 2.0,
-              colors: [Colors.white, Colors.blue], center: Alignment(1, 1))),
+          gradient: RadialGradient(
+              radius: 2.0,
+              colors: [Colors.white, Colors.blue],
+              center: Alignment(1, 1))),
       child: showList(),
     );
   }
