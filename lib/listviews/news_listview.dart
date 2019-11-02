@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mariealert/screens/show_detail_image.dart';
 import '../models/news_model.dart';
 import '../screens/detail_news.dart';
 
@@ -44,12 +45,29 @@ class NewsListView extends StatelessWidget {
                 : BoxDecoration(color: Colors.blue[200]),
             child: Row(
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.all(10.0),
-                  child: Image.network(newsModels[index].picture,
-                      fit: BoxFit.cover),
-                  constraints:
-                      BoxConstraints.expand(width: 150.0, height: 150.0),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(10.0),
+                      child: Image.network(newsModels[index].picture,
+                          fit: BoxFit.cover),
+                      constraints:
+                          BoxConstraints.expand(width: 150.0, height: 150.0),
+                    ),
+                    FlatButton(
+                      child: Text(
+                        'ขยายภาพ',
+                        style: TextStyle(color: Colors.purple),
+                      ),
+                      onPressed: () {
+                        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+                            builder: (BuildContext context) => ShowDetailImage(
+                                  urlString: newsModels[index].picture,
+                                ));
+                                Navigator.of(context).push(materialPageRoute);
+                      },
+                    )
+                  ],
                 ),
                 Container(
                   margin: EdgeInsets.all(10.0),
